@@ -4,10 +4,11 @@ import logging
 from openpyxl import load_workbook
 import aiogram
 from keys import API_TOKEN
-from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_end_session
+from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_end_session, kb_worker_create_order
 from verification import worker_vefify, admin_vefify
 from aiogram.types import ReplyKeyboardRemove
 from session import worker_session_status, worker_end_session, worker_start_session
+from orders.worker_orders import worker_get_product
 
 
 # КОД
@@ -45,9 +46,25 @@ async def start_session(message: types.Message):
         await message.answer(f'{message.from_user.full_name}, Вы начали смену!', reply_markup=kb_worker_main_menu)
     # Если у мужика смена уже начата
     elif worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'{message.from_user.full_name}, Завершите прошлую смену, чтобы начать эту', reply_markup=kb_worker_end_session)
+        await message.answer(f'{message.from_user.full_name}, Завершите прошлую смену, чтобы начать новую смену', reply_markup=kb_worker_end_session)
+
+# Команда создания заказа
 
 
+@dp.message_handler(commands=['Создать_заказ'])
+async def create_order(message: types.Message):
+    if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        await message.answer('Вы начали собирать заказ №0', reply_markup=kb_worker_create_order)
+
+
+# Команда добавления продукта
+@dp.message_handler(commands=['Добавить'])
+async def create_order(message: types.Message):
+    if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        await message.answer(f'Вы добавили: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
+
+
+# Команда закрытия смены
 @dp.message_handler(commands=['Закрыть_смену'])
 async def end_session(message: types.Message):
     # Если у мужика смена открыта
@@ -57,6 +74,7 @@ async def end_session(message: types.Message):
     # Если у мужика смена уже закрыта
     elif worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == False:
         await message.answer(f'<strong>Вы уже закрыли смену!</strong>\nЕсли вы не закрывали смену, обратитесь к Администратору!', reply_markup=ReplyKeyboardRemove(), parse_mode='html')
+
 
 # ЗАПУСК
 if __name__ == '__main__':
