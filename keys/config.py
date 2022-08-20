@@ -1,2 +1,2 @@
 # ТОКЕН БОТА
-API_TOKEN = 'TOKEN'
+API_TOKEN = '5'
