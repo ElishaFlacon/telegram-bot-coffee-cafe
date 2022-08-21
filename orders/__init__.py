@@ -1,1 +1,1 @@
-from orders.worker_orders import worker_get_product, worker_create_new_order, worker_get_count_order
+from orders.worker_orders import worker_get_product, worker_create_new_order, worker_get_count_order, worker_append_product_to_order

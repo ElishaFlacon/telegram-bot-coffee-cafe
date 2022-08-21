@@ -1,3 +1,4 @@
+from math import prod
 import openpyxl
 import datetime
 
@@ -40,11 +41,14 @@ def worker_get_count_order(worker_id):
     return str(max(num_order))
 
 
-def worker_append_product_to_order(product):
-    max_rw = ORDERS_SHEET.max_row
-    for i in range(max_rw):
-        if str(ORDERS_SHEET[f'C{i+1}'].value) == str(''):
-            ORDERS_SHEET[f'D{i+1}'] = 'Да'
+def worker_append_product_to_order(product, num_order):
+    max_rw_orders = ORDERS_SHEET.max_row
+    for i in range(max_rw_orders):
+        if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Создается'):
+            if ORDERS_SHEET[f'G{i+1}'].value != None:
+                ORDERS_SHEET[f'G{i+1}'] = f'{ORDERS_SHEET[f"G{i+1}"].value} -{product}'
+            elif ORDERS_SHEET[f'G{i+1}'].value == None:
+                ORDERS_SHEET[f'G{i+1}'] = f'-{product}'
     DATA.save('data/data.xlsx')
     DATA.close()
 

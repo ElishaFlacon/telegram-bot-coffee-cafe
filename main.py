@@ -8,7 +8,7 @@ from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_en
 from verification import worker_vefify, admin_vefify
 from aiogram.types import ReplyKeyboardRemove
 from session import worker_session_status, worker_end_session, worker_start_session
-from orders import worker_get_product, worker_create_new_order, worker_get_count_order
+from orders import worker_get_product, worker_create_new_order, worker_get_count_order, worker_append_product_to_order
 
 
 # КОД
@@ -60,6 +60,8 @@ async def create_order(message: types.Message):
 @dp.message_handler(commands=['Добавить'])
 async def create_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        worker_append_product_to_order(worker_get_product(
+            message.text), worker_get_count_order(message.from_user.id))
         await message.answer(f'Вы добавили в заказ №{worker_get_count_order(message.from_user.id)}: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
 
 
