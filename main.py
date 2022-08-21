@@ -8,7 +8,7 @@ from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_en
 from verification import worker_vefify, admin_vefify
 from aiogram.types import ReplyKeyboardRemove
 from session import worker_session_status, worker_end_session, worker_start_session
-from orders import worker_get_product, worker_create_new_order
+from orders import worker_get_product, worker_create_new_order, worker_get_count_order
 
 
 # КОД
@@ -48,21 +48,19 @@ async def start_session(message: types.Message):
     elif worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         await message.answer(f'{message.from_user.full_name}, Завершите прошлую смену, чтобы начать новую смену', reply_markup=kb_worker_end_session)
 
+
 # Команда создания заказа
-
-
 @dp.message_handler(commands=['Создать_заказ'])
 async def create_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        worker_create_new_order(message.from_user.id)
-        await message.answer('Вы начали собирать заказ №0', reply_markup=kb_worker_create_order)
+        await message.answer(f'Вы начали собирать заказ {worker_create_new_order(message.from_user.id)}', reply_markup=kb_worker_create_order)
 
 
 # Команда добавления продукта
 @dp.message_handler(commands=['Добавить'])
 async def create_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'Вы добавили: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
+        await message.answer(f'Вы добавили в заказ №{worker_get_count_order(message.from_user.id)}: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
 
 
 # Команда закрытия смены
