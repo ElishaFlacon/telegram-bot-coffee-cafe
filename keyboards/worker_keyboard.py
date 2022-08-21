@@ -19,6 +19,8 @@ k_order_lemonade = KeyboardButton('/Добавить _лимонад')
 k_order_smoothie = KeyboardButton('/Добавить _смузи')
 k_order_waffle = KeyboardButton('/Добавить _вафлю')
 k_order_milkshake = KeyboardButton('/Добавить _молочный_коктель')
+k_complete_create_order = KeyboardButton('/Завершить_создание_заказа')
+k_cancel_create_order = KeyboardButton('/Отменить_создание_заказа')
 
 
 # Инициализируем клавиатуры
@@ -42,4 +44,4 @@ kb_worker_main_menu.add(k_create_order).add(k_check_actual_orders).add(
 kb_worker_end_session.add(k_end_session)
 # Сбора заказа
 kb_worker_create_order.row(k_order_icecream, k_order_tea).row(
-    k_order_lemonade, k_order_smoothie).row(k_order_waffle, k_order_milkshake)
+    k_order_lemonade, k_order_smoothie).row(k_order_waffle, k_order_milkshake).row(k_complete_create_order).row(k_cancel_create_order)
