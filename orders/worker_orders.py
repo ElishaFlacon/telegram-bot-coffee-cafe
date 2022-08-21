@@ -1,3 +1,9 @@
+import openpyxl
+
+
+DATA = openpyxl.load_workbook('data/data.xlsx')
+WORKERS_SHEET = DATA['workers']
+ORDERS_SHEET = DATA['orders']
 
 
 def worker_get_product(product):
@@ -7,8 +13,26 @@ def worker_get_product(product):
             return i[1:]
 
 
+def worker_create_new_order(worker_id):
+    max_rw_workers = WORKERS_SHEET.max_row
+    max_rw_orders = ORDERS_SHEET.max_row
+    for i in range(max_rw_workers):
+        if str(WORKERS_SHEET[f'C{i+1}'].value) == str(worker_id):
+            for i in range(max_rw_orders+1):
+                if str(ORDERS_SHEET[f'A{i+1}'].value) == None:
+                    ORDERS_SHEET[f'A{i+1}'] = worker_id
+                    ORDERS_SHEET[f'F{i+1}'] = 'жопа'
+    DATA.save('data/data.xlsx')
+    DATA.close()
+
+
 def worker_append_product_to_order(product):
-    pass
+    max_rw = ORDERS_SHEET.max_row
+    for i in range(max_rw):
+        if str(ORDERS_SHEET[f'C{i+1}'].value) == str(''):
+            ORDERS_SHEET[f'D{i+1}'] = 'Да'
+    DATA.save('data/data.xlsx')
+    DATA.close()
 
 
 def worker_complete_order():

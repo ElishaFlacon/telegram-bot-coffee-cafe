@@ -8,7 +8,7 @@ from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_en
 from verification import worker_vefify, admin_vefify
 from aiogram.types import ReplyKeyboardRemove
 from session import worker_session_status, worker_end_session, worker_start_session
-from orders.worker_orders import worker_get_product
+from orders import worker_get_product, worker_create_new_order
 
 
 # КОД
@@ -54,6 +54,7 @@ async def start_session(message: types.Message):
 @dp.message_handler(commands=['Создать_заказ'])
 async def create_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        worker_create_new_order(message.from_user.id)
         await message.answer('Вы начали собирать заказ №0', reply_markup=kb_worker_create_order)
 
 
