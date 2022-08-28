@@ -1,8 +1,4 @@
-import openpyxl
-
-
-DATA = openpyxl.load_workbook('data/data.xlsx')
-ADMINS_SHEET = DATA['admins']
+from data import *
 
 
 def admin_vefify(admin_id):

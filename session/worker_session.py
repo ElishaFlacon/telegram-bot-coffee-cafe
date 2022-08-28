@@ -1,8 +1,4 @@
-import openpyxl
-
-
-DATA = openpyxl.load_workbook('data/data.xlsx')
-WORKERS_SHEET = DATA['workers']
+from data import *
 
 
 def worker_session_status(worker_id):
@@ -19,8 +15,7 @@ def worker_start_session(worker_id):
     for i in range(max_rw):
         if str(WORKERS_SHEET[f'C{i+1}'].value) == str(worker_id):
             WORKERS_SHEET[f'D{i+1}'] = 'Да'
-    DATA.save('data/data.xlsx')
-    DATA.close()
+    save_data()
 
 
 def worker_end_session(worker_id):
@@ -28,5 +23,4 @@ def worker_end_session(worker_id):
     for i in range(max_rw):
         if str(WORKERS_SHEET[f'C{i+1}'].value) == str(worker_id):
             WORKERS_SHEET[f'D{i+1}'] = 'Нет'
-    DATA.save('data/data.xlsx')
-    DATA.close()
+    save_data()

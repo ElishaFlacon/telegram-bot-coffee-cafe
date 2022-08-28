@@ -1,8 +1,4 @@
-import openpyxl
-
-
-DATA = openpyxl.load_workbook('data/data.xlsx')
-WORKERS_SHEET = DATA['workers']
+from data import *
 
 
 def worker_vefify(worker_id):
