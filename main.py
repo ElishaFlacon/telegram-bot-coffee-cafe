@@ -54,9 +54,13 @@ async def create_order(message: types.Message):
 @dp.message_handler(commands=['Добавить'])
 async def add_product_to_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        append_product_to_order(get_product(
-            message.text), get_count_being_created_order(message.from_user.id))
-        await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
+        if message.text == '_мороженное':
+            #! Тут нужно доделать клавиатуру с выбором вкуса и посыпки или че там
+            await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
+        else:
+            append_product_to_order(get_product(
+                message.text), get_count_being_created_order(message.from_user.id))
+            await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
 
 
 # Команда завершения создания заказа
