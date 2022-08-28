@@ -26,12 +26,12 @@ k_cancel_create_order = KeyboardButton('/Отменить_создание_за�
 # Инлайн кнопки, для завершения заказа или его отмены
 def create_inline_keyboard(num_order):
     k_complete_order = InlineKeyboardButton(
-        text=f'ЗЗ {num_order}', callback_data=f'++ da')
+        text=f'🟩 Выполнить заказ №{num_order} 🟩', callback_data=f'++ {num_order}')
     k_remove_order = InlineKeyboardButton(
-        text=f'ТТ {num_order}', callback_data=f'-- {num_order}')
+        text=f'🟥 Удалить заказ №{num_order} 🟥', callback_data=f'-- {num_order}')
     kb_worker_comoleted_and_remove_order = InlineKeyboardMarkup(row_width=2)
-    return kb_worker_comoleted_and_remove_order.insert(
-        k_complete_order).insert(k_remove_order)
+    return kb_worker_comoleted_and_remove_order.add(
+        k_complete_order).add(k_remove_order)
 
 
 # Инициализируем клавиатуры

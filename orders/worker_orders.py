@@ -7,6 +7,7 @@ WORKERS_SHEET = DATA['workers']
 ORDERS_SHEET = DATA['orders']
 
 
+# Получаем продукт
 def worker_get_product(product):
     product_name = str(product).split()
     for i in product_name:
@@ -14,6 +15,7 @@ def worker_get_product(product):
             return i[1:]
 
 
+# Получаем все продукты из заказа
 def worker_get_all_products(num_order):
     products = ''
     max_rw_orders = ORDERS_SHEET.max_row
@@ -32,6 +34,7 @@ def worker_get_all_products(num_order):
     return str(products)
 
 
+# Создаем новый заказ
 def worker_create_new_order(worker_id):
     max_rw_workers = WORKERS_SHEET.max_row
     max_rw_orders = ORDERS_SHEET.max_row
@@ -50,7 +53,8 @@ def worker_create_new_order(worker_id):
                     return str(int(ORDERS_SHEET[f'A{i+1}'].row - 1))
 
 
-def worker_get_count_created_order(worker_id):
+# Получаем количество создающихся заказов
+def worker_get_count_being_created_order(worker_id):
     num_order = []
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -59,12 +63,14 @@ def worker_get_count_created_order(worker_id):
     return str(max(num_order))
 
 
+# Получаем количество всех заказов
 def worker_get_count_all_orders():
     # Минусуем чтобы последняя строка не попадала
     # Иначе будет на выходе None в функции check_actua_orders
     return int(ORDERS_SHEET.max_row) - 1
 
 
+# Добовляем продукты в заказ
 def worker_append_product_to_order(product, num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -77,6 +83,7 @@ def worker_append_product_to_order(product, num_order):
     DATA.close()
 
 
+# Добовляем дополнительные продукты в заказ, типо вкус мороженого
 def worker_append_additional_product_to_order(product, num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -87,6 +94,7 @@ def worker_append_additional_product_to_order(product, num_order):
     DATA.close()
 
 
+# Завершаем создание заказа
 def worker_complete_create_order(num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -97,18 +105,22 @@ def worker_complete_create_order(num_order):
     DATA.close()
 
 
+# Выполняем заказ
 def worker_complete_order():
     pass
 
 
+# Отменяем заказ
 def worker_remove_order():
     pass
 
 
+# Смотрим выполненные заказы
 def worker_check_completed_orders():
     pass
 
 
+# Смотрим выполняющиеся заказы
 def worker_check_actual_orders(num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -117,5 +129,6 @@ def worker_check_actual_orders(num_order):
             return order_info
 
 
-def worker_append_cash_order():
+# Добовляем цену продукта в заказ
+def append_product_price_to_order():
     pass
