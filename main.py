@@ -1,10 +1,11 @@
 # МОДУЛИ
+from cgitb import text
 from aiogram import Bot, Dispatcher, executor, types
 import logging
 from openpyxl import load_workbook
 import aiogram
 from keys import API_TOKEN
-from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_end_session, kb_worker_create_order
+from keyboards import kb_worker_start_session, kb_worker_main_menu, kb_worker_end_session, kb_worker_create_order, create_inline_keyboard
 from verification import worker_vefify, admin_vefify
 from aiogram.types import ReplyKeyboardRemove
 from session import worker_session_status, worker_end_session, worker_start_session
@@ -61,16 +62,29 @@ async def create_order(message: types.Message):
 async def append_product_to_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         worker_append_product_to_order(worker_get_product(
-            message.text), worker_get_count_order(message.from_user.id))
-        await message.answer(f'Вы добавили в заказ №{worker_get_count_order(message.from_user.id)}: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
+            message.text), worker_get_count_created_order(message.from_user.id))
+        await message.answer(f'Вы добавили в заказ №{worker_get_count_created_order(message.from_user.id)}: <strong>{worker_get_product(message.text)}</strong>', parse_mode='html')
 
 
 @dp.message_handler(commands=['Завершить_создание_заказа'])
 async def complete_creating_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'Вы завершили создание заказа №{worker_get_count_order(message.from_user.id)}: <strong>{worker_get_all_products(worker_get_count_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
+        await message.answer(f'Вы завершили создание заказа №{worker_get_count_created_order(message.from_user.id)}: <strong>{worker_get_all_products(worker_get_count_created_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
         worker_complete_create_order(
-            worker_get_count_order(message.from_user.id))
+            worker_get_count_created_order(message.from_user.id))
+
+
+@dp.message_handler(commands=['Текущие_заказы'])
+async def check_actua_orders(message: types.Message):
+    if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        for i in range(worker_get_count_all_orders()):
+            # А тут плюсуем, чтобы верхняя строка не попадала, иначе выведет None
+            await message.answer(f'{worker_check_actual_orders(i+1)}', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
+
+
+@dp.callback_query_handler()
+async def complete_and_remove_orders(callback: types.CallbackQuery):
+    await callback.answer(f'PFasdasd {callback.data}')
 
 
 # Команда закрытия смены

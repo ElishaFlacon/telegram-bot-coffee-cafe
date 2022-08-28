@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 
 
 # Кнопки старта смены
@@ -23,6 +23,17 @@ k_complete_create_order = KeyboardButton('/Завершить_создание_�
 k_cancel_create_order = KeyboardButton('/Отменить_создание_заказа')
 
 
+# Инлайн кнопки, для завершения заказа или его отмены
+def create_inline_keyboard(num_order):
+    k_complete_order = InlineKeyboardButton(
+        text=f'ЗЗ {num_order}', callback_data=f'++ da')
+    k_remove_order = InlineKeyboardButton(
+        text=f'ТТ {num_order}', callback_data=f'-- {num_order}')
+    kb_worker_comoleted_and_remove_order = InlineKeyboardMarkup(row_width=2)
+    return kb_worker_comoleted_and_remove_order.insert(
+        k_complete_order).insert(k_remove_order)
+
+
 # Инициализируем клавиатуры
 # Старта смены
 kb_worker_start_session = ReplyKeyboardMarkup(resize_keyboard=True)
@@ -32,6 +43,7 @@ kb_worker_main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_worker_end_session = ReplyKeyboardMarkup(resize_keyboard=True)
 # Сбора заказа
 kb_worker_create_order = ReplyKeyboardMarkup(resize_keyboard=True)
+# Инлайн клавиатура, для завершения заказа или его отмены
 
 
 # Отображаем клавиатуры
