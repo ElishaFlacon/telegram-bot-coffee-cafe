@@ -1,6 +1,6 @@
 import openpyxl
 import datetime
-from products import worker_get_all_products
+from products import get_all_products
 
 
 DATA = openpyxl.load_workbook('data/data.xlsx')
@@ -9,7 +9,7 @@ ORDERS_SHEET = DATA['orders']
 
 
 # Создаем новый заказ
-def worker_create_new_order(worker_id):
+def create_new_order(worker_id):
     max_rw_workers = WORKERS_SHEET.max_row
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_workers):
@@ -28,7 +28,7 @@ def worker_create_new_order(worker_id):
 
 
 # Завершаем создание заказа
-def worker_complete_create_order(num_order):
+def complete_create_order(num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Создается'):
@@ -39,14 +39,14 @@ def worker_complete_create_order(num_order):
 
 
 # Получаем количество всех заказов
-def worker_get_count_all_orders():
+def get_count_all_orders():
     # Минусуем чтобы последняя строка не попадала
     # Иначе будет на выходе None в функции check_actua_orders
     return int(ORDERS_SHEET.max_row) - 1
 
 
 # Получаем количество создающихся заказов
-def worker_get_count_being_created_order(worker_id):
+def get_count_being_created_order(worker_id):
     num_order = []
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -56,24 +56,24 @@ def worker_get_count_being_created_order(worker_id):
 
 
 # Выполняем заказ
-def worker_complete_order():
+def complete_order():
     pass
 
 
 # Отменяем заказ
-def worker_remove_order():
+def remove_order():
     pass
 
 
 # Смотрим выполняющиеся заказы
-def worker_check_actual_orders(num_order):
+def check_running_orders(num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Выполняется'):
-            order_info = f'Заказ №{num_order}: {worker_get_all_products(num_order)} ЦЕНА: 0'
+            order_info = f'Заказ №{num_order}: {get_all_products(num_order)} ЦЕНА: 0'
             return order_info
 
 
 # Смотрим выполненные заказы
-def worker_check_completed_orders():
+def check_completed_orders():
     pass

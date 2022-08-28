@@ -8,7 +8,7 @@ ORDERS_SHEET = DATA['orders']
 
 
 # Получаем продукт
-def worker_get_product(product):
+def get_product(product):
     product_name = str(product).split()
     for i in product_name:
         if i.find('_') == 0:
@@ -16,7 +16,7 @@ def worker_get_product(product):
 
 
 # Получаем все продукты из заказа
-def worker_get_all_products(num_order):
+def get_all_products(num_order):
     products = ''
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
@@ -35,7 +35,7 @@ def worker_get_all_products(num_order):
 
 
 # Добовляем продукты в заказ
-def worker_append_product_to_order(product, num_order):
+def append_product_to_order(product, num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Создается'):
@@ -48,7 +48,7 @@ def worker_append_product_to_order(product, num_order):
 
 
 # Добовляем дополнительные продукты в заказ, типо вкус мороженого
-def worker_append_additional_product_to_order(product, num_order):
+def append_additional_product_to_order(product, num_order):
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Создается'):
