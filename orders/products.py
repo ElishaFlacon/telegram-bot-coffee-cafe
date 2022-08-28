@@ -35,10 +35,8 @@ def append_product_to_order(product, num_order):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == str('Создается'):
             if ORDERS_SHEET[f'G{i+1}'].value != None:
                 ORDERS_SHEET[f'G{i+1}'] = f'{ORDERS_SHEET[f"G{i+1}"].value} -{product}'
-                print(f'{ORDERS_SHEET[f"G{i+1}"].value} -{product}')
             elif ORDERS_SHEET[f'G{i+1}'].value == None:
                 ORDERS_SHEET[f'G{i+1}'] = f'-{product}'
-                print(f'-{product}')
     save_data()
 
 
@@ -50,8 +48,3 @@ def append_additional_product_to_order(product, num_order):
             if ORDERS_SHEET[f'G{i+1}'].value != None:
                 ORDERS_SHEET[f'G{i+1}'] = f'{ORDERS_SHEET[f"G{i+1}"].value} +{product}'
     save_data()
-
-
-# Добовляем цену продукта в заказ
-def append_product_price_to_order():
-    pass
