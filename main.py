@@ -74,16 +74,29 @@ async def check_actua_orders(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         for i in range(get_count_all_orders()):
             # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
-            await message.answer(f'{check_running_orders(i+1)}', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
+            if check_running_orders(i+1) == True:
+                await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)}</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
+
+
+# Команда просмотра завершенных заказов
+@dp.message_handler(commands=['Выполненные_заказы'])
+async def check_actua_orders(message: types.Message):
+    if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        for i in range(get_count_all_orders()):
+            # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
+            if check_completed_orders(i+1) == True:
+                await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)}</strong>', parse_mode='html')
 
 
 # Тут будут все команды от инлайн кнопок
 @dp.callback_query_handler()
 async def inline_keyboards_commands(callback: types.CallbackQuery):
     if callback.data.split()[0] == '++':
-        await callback.answer(f'Выполняем заказ {callback.data}')
+        await callback.answer(f'🟩 Заказ №{callback.data.split()[1]} Завершен!')
+        complete_order(callback.data.split()[1])
     elif callback.data.split()[0] == '--':
-        await callback.answer(f'Удаляем заказ {callback.data}')
+        await callback.answer(f'🟥 Заказ №{callback.data.split()[1]} Удален!')
+        remove_order(callback.data.split()[1])
 
 
 # Команда закрытия смены
