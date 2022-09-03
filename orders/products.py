@@ -5,7 +5,11 @@ from data import *
 def get_product(product):
     product_name = str(product).split()
     for i in product_name:
-        if i.find('_') == 0:
+        if i.find('_вкус_') == 0:
+            pass
+        elif i.find('_посыпку_') == 0:
+            pass
+        elif i.find('_') == 0:
             return i[1:]
 
 

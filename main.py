@@ -54,17 +54,37 @@ async def create_order(message: types.Message):
 @dp.message_handler(commands=['Добавить'])
 async def add_product_to_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        if message.text == '_мороженное':
-            #! Тут нужно доделать клавиатуру с выбором вкуса и посыпки или че там
-            await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
-        else:
-            append_product_to_order(get_product(
-                message.text), get_count_being_created_order(message.from_user.id))
-            await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
+        # #! Тут говно код, проверкb на то, что чел выбрал вкус и все такое
+        # #! И да я знаю, что можно было через стейт машины сделат
+        # #! Но я художник я так вижу, ну и мне лень было XD
+        # for i in message.text.split():
+        #     if i.find('_мороженое') == 0:
+        #         await message.answer(f'Выберите вкус мороженого', parse_mode='html', reply_markup=kb_worker_select_taste_icecream)
+        #         for i in message.text.split():
+        #             if i.find('_вкус_') == 0:
+        #                 await message.answer(f'Выберите посыпки для мороженого', reply_markup=kb_worker_select_additions_icecream)
+        #                 for i in message.text.split():
+        #                     if i.find('_без_посыпки') == 0 or i.find('/Завершить_добовление_посыпок') == 0:
+        #                         await message.answer(f'Выберите топинг для мороженого', reply_markup=kb_worker_select_topping_icecream)
+        #                         for i in message.text.split():
+        #                             if i.find('_топинг_') == 0 or i.find('без_топинга') == 0:
+        #                                 await message.answer(reply_markup=kb_worker_create_order)
+
+        append_product_to_order(get_product(
+                                message.text), get_count_being_created_order(message.from_user.id))
+        await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
+
+
+# Команда отмены заказа
+@ dp.message_handler(commands=['Отменить_создание_заказа'])
+async def complete_creating_order(message: types.Message):
+    if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+        await message.answer(f'Вы отменили создание заказа №{get_count_being_created_order(message.from_user.id)}. <strong>Заказ считается удаленным!</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
+        remove_order(get_count_being_created_order(message.from_user.id))
 
 
 # Команда завершения создания заказа
-@dp.message_handler(commands=['Завершить_создание_заказа'])
+@ dp.message_handler(commands=['Завершить_создание_заказа'])
 async def complete_creating_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         await message.answer(f'Вы завершили создание заказа №{get_count_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_count_being_created_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
@@ -73,7 +93,7 @@ async def complete_creating_order(message: types.Message):
 
 
 # Команда просмотра текущих заказов
-@dp.message_handler(commands=['Текущие_заказы'])
+@ dp.message_handler(commands=['Текущие_заказы'])
 async def check_actua_orders(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         for i in range(get_count_all_orders()):
@@ -83,7 +103,7 @@ async def check_actua_orders(message: types.Message):
 
 
 # Команда просмотра завершенных заказов
-@dp.message_handler(commands=['Выполненные_заказы'])
+@ dp.message_handler(commands=['Выполненные_заказы'])
 async def check_actua_orders(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         for i in range(get_count_all_orders()):
@@ -93,7 +113,7 @@ async def check_actua_orders(message: types.Message):
 
 
 # Тут будут все команды от инлайн кнопок
-@dp.callback_query_handler()
+@ dp.callback_query_handler()
 async def inline_keyboards_commands(callback: types.CallbackQuery):
     if callback.data.split()[0] == '++':
         await callback.answer(f'🟩 Заказ №{callback.data.split()[1]} Завершен!')
@@ -104,7 +124,7 @@ async def inline_keyboards_commands(callback: types.CallbackQuery):
 
 
 # Команда закрытия смены
-@dp.message_handler(commands=['Закрыть_смену'])
+@ dp.message_handler(commands=['Закрыть_смену'])
 async def end_session(message: types.Message):
     # Если у мужика смена открыта
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
