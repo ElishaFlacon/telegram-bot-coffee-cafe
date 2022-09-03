@@ -1,3 +1,4 @@
+from itertools import product
 from aiogram import Bot, Dispatcher, executor, types
 import logging
 from aiogram.types import ReplyKeyboardRemove
@@ -6,18 +7,33 @@ from keyboards import *
 from verification import *
 from session import *
 from orders import *
+# для стейт машины
+from aiogram.contrib.fsm_storage.memory import MemoryStorage
+# для хендлеров
+from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.filters.state import State, StatesGroup
+
+
+class FSMAppends(StatesGroup):
+    product = State()
+    taste = State()
+    additions = State()
+    topping = State()
 
 
 def on_startup():
     print('БОТ ЗАПУЩЕН!!!')
 
 
+# Память
+storage = MemoryStorage()
+
 # ЛОГИНИМСЯ
 logging.basicConfig(level=logging.INFO)
 
 # ИНИЦИАЛИЗИРУЕМ БОТА И ДИСПЕТЧЕРА
 bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot)
+dp = Dispatcher(bot, storage=storage)
 
 
 # Команда старта
@@ -69,7 +85,7 @@ async def add_product_to_order(message: types.Message):
         #                         for i in message.text.split():
         #                             if i.find('_топинг_') == 0 or i.find('без_топинга') == 0:
         #                                 await message.answer(reply_markup=kb_worker_create_order)
-
+        # https://www.youtube.com/watch?v=nF1p1JjuR3U&t=395s
         append_product_to_order(get_product(
                                 message.text), get_count_being_created_order(message.from_user.id))
         await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
