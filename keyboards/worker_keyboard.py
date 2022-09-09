@@ -13,15 +13,18 @@ k_end_session = KeyboardButton('/Закрыть_смену')
 
 
 # Кнопки для сбора заказа
-k_order_icecream = KeyboardButton('/Добавить _мороженое')
-k_order_tea = KeyboardButton('/Добавить _чай')
-k_order_lemonade = KeyboardButton('/Добавить _лимонад')
-k_order_smoothie = KeyboardButton('/Добавить _смузи')
-k_order_waffle = KeyboardButton('/Добавить _вафлю')
-k_order_milkshake = KeyboardButton('/Добавить _молочный_коктель')
+k_order_append_product = KeyboardButton('/Добавить_Продукт')
 k_complete_create_order = KeyboardButton('/Завершить_создание_заказа')
 k_cancel_create_order = KeyboardButton('/Отменить_создание_заказа')
 
+
+# Кнопки выбора продукта
+k_product_icecream = KeyboardButton('Мороженое')
+k_product_tea = KeyboardButton('Чай')
+k_product_lemonade = KeyboardButton('Лимонад')
+k_product_smoothie = KeyboardButton('Смузи')
+k_product_waffle = KeyboardButton('Вафлю')
+k_product_milkshake = KeyboardButton('Молочный_коктель')
 
 # Кнопки выбора вкуса мороженого
 k_taste_icecream_banana = KeyboardButton('/Добавить _вкус_банан')
@@ -84,6 +87,9 @@ kb_worker_main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_worker_end_session = ReplyKeyboardMarkup(resize_keyboard=True)
 # Сбора заказа
 kb_worker_create_order = ReplyKeyboardMarkup(resize_keyboard=True)
+# Выбора продукта
+kb_worker_append_product = ReplyKeyboardMarkup(resize_keyboard=True)
+
 # Выбора вкуса мороженного
 kb_worker_select_taste_icecream = ReplyKeyboardMarkup(resize_keyboard=True)
 # Выбора посыпки для мороженного
@@ -101,8 +107,11 @@ kb_worker_main_menu.add(k_create_order).add(k_check_actual_orders).add(
 # Если мужик забыл закрыть смену и пытается открыть ее снова
 kb_worker_end_session.add(k_end_session)
 # Сбора заказа
-kb_worker_create_order.row(k_order_icecream, k_order_tea).row(
-    k_order_lemonade, k_order_smoothie).row(k_order_waffle, k_order_milkshake).row(k_complete_create_order).row(k_cancel_create_order)
+kb_worker_create_order.row(k_order_append_product).row(
+    k_complete_create_order).row(k_cancel_create_order)
+# Выбора продукта
+kb_worker_append_product.row(k_product_icecream, k_product_tea).row(
+    k_product_lemonade, k_product_smoothie).row(k_product_waffle, k_product_milkshake)
 # Выбора вкуса мороженного
 kb_worker_select_taste_icecream.row(k_taste_icecream_banana, k_taste_icecream_orio).row(k_taste_icecream_kiwi, k_taste_icecream_pistachios).row(
     k_taste_icecream_nutella, k_taste_icecream_kit_kat).row(k_taste_icecream_pineapple, k_taste_icecream_rofaello).row(k_taste_icecream_love_is, )

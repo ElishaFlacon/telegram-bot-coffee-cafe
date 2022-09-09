@@ -14,7 +14,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
-class FSMAppends(StatesGroup):
+class FSMProducts(StatesGroup):
     product = State()
     taste = State()
     additions = State()
@@ -67,28 +67,35 @@ async def create_order(message: types.Message):
 
 
 # Команда добавления продукта
-@dp.message_handler(commands=['Добавить'])
+@dp.message_handler(commands=['Добавить_Продукт'])
 async def add_product_to_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        # #! Тут говно код, проверкb на то, что чел выбрал вкус и все такое
-        # #! И да я знаю, что можно было через стейт машины сделат
-        # #! Но я художник я так вижу, ну и мне лень было XD
-        # for i in message.text.split():
-        #     if i.find('_мороженое') == 0:
-        #         await message.answer(f'Выберите вкус мороженого', parse_mode='html', reply_markup=kb_worker_select_taste_icecream)
-        #         for i in message.text.split():
-        #             if i.find('_вкус_') == 0:
-        #                 await message.answer(f'Выберите посыпки для мороженого', reply_markup=kb_worker_select_additions_icecream)
-        #                 for i in message.text.split():
-        #                     if i.find('_без_посыпки') == 0 or i.find('/Завершить_добовление_посыпок') == 0:
-        #                         await message.answer(f'Выберите топинг для мороженого', reply_markup=kb_worker_select_topping_icecream)
-        #                         for i in message.text.split():
-        #                             if i.find('_топинг_') == 0 or i.find('без_топинга') == 0:
-        #                                 await message.answer(reply_markup=kb_worker_create_order)
-        # https://www.youtube.com/watch?v=nF1p1JjuR3U&t=395s
-        append_product_to_order(get_product(
-                                message.text), get_count_being_created_order(message.from_user.id))
-        await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
+        await FSMProducts.product.set()
+        await message.answer('Выберите Продукт', reply_markup=kb_worker_append_product)
+
+
+#! Выбор продукта
+@dp.message_handler(state=FSMProducts.product)
+async def select_product(message: types.Message, state: FSMContext):
+    # Тут в словарь сохраняем данные
+    async with state.proxy() as data:
+        data['product'] = message.text
+    await FSMProducts.next()
+    if data['product'] == 'Мороженое':
+        await message.answer('Выберите Вкус Мороженки', reply_markup=kb_worker_select_taste_icecream)
+    await message.answer('Выберите Вкус')
+
+
+#! Выбор вкуса
+@dp.message_handler(state=FSMProducts.taste)
+async def select_product(message: types.Message, state: FSMContext):
+    # Тут в словарь сохраняем данные
+    async with state.proxy() as data:
+        data['taste'] = message.text
+    await FSMProducts.next()
+    async with state.proxy() as data:
+        await message.answer(str(data),  reply_markup=kb_worker_create_order)
+    await state.finish()
 
 
 # Команда отмены заказа
@@ -154,3 +161,27 @@ async def end_session(message: types.Message):
 # ЗАПУСК
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup())
+
+
+# МУСОРКА
+
+    # #! Тут говно код, проверкb на то, что чел выбрал вкус и все такое
+    # #! И да я знаю, что можно было через стейт машины сделат
+    # #! Но я художник я так вижу, ну и мне лень было XD
+    # for i in message.text.split():
+    #     if i.find('_мороженое') == 0:
+    #         await message.answer(f'Выберите вкус мороженого', parse_mode='html', reply_markup=kb_worker_select_taste_icecream)
+    #         for i in message.text.split():
+    #             if i.find('_вкус_') == 0:
+    #                 await message.answer(f'Выберите посыпки для мороженого', reply_markup=kb_worker_select_additions_icecream)
+    #                 for i in message.text.split():
+    #                     if i.find('_без_посыпки') == 0 or i.find('/Завершить_добовление_посыпок') == 0:
+    #                         await message.answer(f'Выберите топинг для мороженого', reply_markup=kb_worker_select_topping_icecream)
+    #                         for i in message.text.split():
+    #                             if i.find('_топинг_') == 0 or i.find('без_топинга') == 0:
+    #                                 await message.answer(reply_markup=kb_worker_create_order)
+    # https://www.youtube.com/watch?v=nF1p1JjuR3U&t=395s
+
+ # append_product_to_order(get_product(
+    #                         message.text), get_count_being_created_order(message.from_user.id))
+    # await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')
