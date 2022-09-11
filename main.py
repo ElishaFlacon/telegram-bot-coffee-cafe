@@ -117,7 +117,7 @@ async def select_taste(message: types.Message, state: FSMContext):
         data['taste'] = message.text
     # Проверка на мороженное чтобы в дальшнейшем мы смогли добавить топинги
     if data['product'] == 'Мороженое':
-        await message.answer('Выберите ПОСЫПКУ Мороженки', reply_markup=kb_worker_select_additions_icecream)
+        await message.answer('Выберите посыпку для мороженного', reply_markup=kb_worker_select_additions_icecream)
         await FSMProducts.next()
         # Задаем значение для посыпки
         # Чтобы можно было нормально записать сразу несколько посыпок
@@ -127,6 +127,7 @@ async def select_taste(message: types.Message, state: FSMContext):
     else:
         async with state.proxy() as data:
             await message.answer(str(data),  reply_markup=kb_worker_create_order)
+        #! ТУТ НУЖНО
         await state.finish()
 
 
@@ -135,12 +136,12 @@ async def select_taste(message: types.Message, state: FSMContext):
 async def select_toping(message: types.Message, state: FSMContext):
     if message.text == 'Завершить':
         await FSMProducts.next()
-        await message.answer('Выберите ТОПИНГ Мороженки', reply_markup=kb_worker_select_topping_icecream)
+        await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
     elif message.text == 'Без_Посыпки':
         async with state.proxy() as data:
             data['additions'] = message.text
         await FSMProducts.next()
-        await message.answer('Выберите ТОПИНГ Мороженки', reply_markup=kb_worker_select_topping_icecream)
+        await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
     else:
         async with state.proxy() as data:
             data['additions'] += message.text + ' '
@@ -154,6 +155,7 @@ async def select_toping(message: types.Message, state: FSMContext):
         data['toping'] = message.text
     async with state.proxy() as data:
         await message.answer(str(data),  reply_markup=kb_worker_create_order)
+    #! ТУТ НУЖНО
     await state.finish()
 
 
