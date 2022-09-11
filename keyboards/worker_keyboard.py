@@ -25,7 +25,7 @@ k_product_lemonade = KeyboardButton('Лимонад')
 k_product_smoothie = KeyboardButton('Смузи')
 k_product_waffle = KeyboardButton('Вафля')
 k_product_milkshake = KeyboardButton('Молочный_Коктель')
-k_cancel_append_product = KeyboardButton('/НАЗАД')
+k_cancel_append_product = KeyboardButton('ОТМЕНА')
 
 
 # Кнопки выбора вкуса мороженого
@@ -48,7 +48,7 @@ k_addition_icecream_chocolate = KeyboardButton('Шоколад')
 k_addition_icecream_coconut = KeyboardButton('Кокос')
 k_addition_icecream_mandms = KeyboardButton('m&ms')
 k_addition_icecream_none = KeyboardButton('Без_Посыпки')
-k_addition_icecream_complete = KeyboardButton('/Завершить_добовление_посыпок')
+k_addition_icecream_complete = KeyboardButton('Завершить')
 
 
 # Кнопки добовления топинга для мороженного
@@ -143,25 +143,25 @@ kb_worker_create_order.row(k_order_append_product).row(
     k_complete_create_order).row(k_cancel_create_order)
 # Выбора продукта
 kb_worker_append_product.row(k_product_icecream, k_product_tea).row(
-    k_product_lemonade, k_product_smoothie).row(k_product_waffle, k_product_milkshake)
+    k_product_lemonade, k_product_smoothie).row(k_product_waffle, k_product_milkshake).row(k_cancel_append_product)
 # Выбора вкуса мороженного
 kb_worker_select_taste_icecream.row(k_taste_icecream_banana, k_taste_icecream_orio).row(k_taste_icecream_kiwi, k_taste_icecream_pistachios).row(
-    k_taste_icecream_nutella, k_taste_icecream_kit_kat).row(k_taste_icecream_pineapple, k_taste_icecream_rofaello).row(k_taste_icecream_love_is, )
+    k_taste_icecream_nutella, k_taste_icecream_kit_kat).row(k_taste_icecream_pineapple, k_taste_icecream_rofaello).row(k_taste_icecream_love_is, ).row(k_cancel_append_product)
 # Выбора посыпки для мороженного
 kb_worker_select_additions_icecream.row(k_addition_icecream_marmalade, k_addition_icecream_cream).row(k_addition_icecream_marshmallows, k_addition_icecream_chocolate).row(
-    k_addition_icecream_coconut, k_addition_icecream_mandms).row(k_addition_icecream_none)
+    k_addition_icecream_coconut, k_addition_icecream_mandms).row(k_addition_icecream_none, k_addition_icecream_complete).row(k_cancel_append_product)
 # Добовления топинга для мороженного
 kb_worker_select_topping_icecream.row(k_topping_icecream_strawberry, k_topping_icecream_banana).row(
-    k_topping_icecream_chocolate, k_topping_icecream_caramel).row(k_topping_icecream_none)
+    k_topping_icecream_chocolate, k_topping_icecream_caramel).row(k_topping_icecream_none).row(k_cancel_append_product)
 # Выбор вкуса чая
 kb_worker_select_taste_tea.row(k_taste_tea_buckthorn_mint, k_taste_tea_raspberry_mint_basil).row(
-    k_taste_tea_strawberry_basil, k_taste_tea_lemon_ginger)
+    k_taste_tea_strawberry_basil, k_taste_tea_lemon_ginger).row(k_cancel_append_product)
 # Выбор вкуса лимонада
 kb_worker_select_taste_lemonade.row(k_taste_lemonade_mojito, k_taste_lemonade_lemon).row(
-    k_taste_lemonade_buble_gum, k_taste_lemonade_strawberry).row(k_taste_lemonade_coconut, k_taste_lemonade_passionflora)
+    k_taste_lemonade_buble_gum, k_taste_lemonade_strawberry).row(k_taste_lemonade_coconut, k_taste_lemonade_passionflora).row(k_cancel_append_product)
 # Выбор вкуса смузи
 kb_worker_select_taste_smoothie.row(k_taste_smoothie_garnet_kiss, k_taste_smoothie_vit).row(
-    k_taste_smoothie_grape, k_taste_smoothie_pinacolada).row(k_taste_smoothie_tropic)
+    k_taste_smoothie_grape, k_taste_smoothie_pinacolada).row(k_taste_smoothie_tropic).row(k_cancel_append_product)
 # Выбор вкуса молочного коктеля
 kb_worker_select_taste_milkshake.row(k_taste_milk_banana, k_taste_milk_chocolate).row(
-    k_taste_milk_strawberry, k_taste_milk_vanilla).row(k_taste_milk_nutella, k_taste_milk_neskvik)
+    k_taste_milk_strawberry, k_taste_milk_vanilla).row(k_taste_milk_nutella, k_taste_milk_neskvik).row(k_cancel_append_product)
