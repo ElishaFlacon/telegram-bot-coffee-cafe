@@ -1,4 +1,3 @@
-from itertools import product
 from aiogram import Bot, Dispatcher, executor, types
 from aiogram.dispatcher.filters import Text
 import logging
@@ -68,11 +67,11 @@ async def create_order(message: types.Message):
 
 
 # Команда добавления продукта
-@dp.message_handler(commands=['Добавить_Продукт'])
+@dp.message_handler(commands=['Добавить_продукт'])
 async def add_product_to_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
         await FSMProducts.product.set()
-        await message.answer('Выберите Продукт', reply_markup=kb_worker_append_product)
+        await message.answer('Выберите продукт', reply_markup=kb_worker_append_product)
 
 
 # Выход из машины состояния, команда отмены (выше всех команд добавления продуктов)
@@ -92,19 +91,20 @@ async def select_product(message: types.Message, state: FSMContext):
         data['product'] = message.text
     await FSMProducts.next()
     if data['product'] == 'Мороженое':
-        await message.answer('Выберите Вкус Мороженки', reply_markup=kb_worker_select_taste_icecream)
+        await message.answer('Выберите вкус мороженого', reply_markup=kb_worker_select_taste_icecream)
     elif data['product'] == 'Чай':
-        await message.answer('Выберите Вкус Чая', reply_markup=kb_worker_select_taste_tea)
+        await message.answer('Выберите вкус чая', reply_markup=kb_worker_select_taste_tea)
     elif data['product'] == 'Лимонад':
-        await message.answer('Выберите Вкус Лимонада', reply_markup=kb_worker_select_taste_lemonade)
+        await message.answer('Выберите вкус лимонада', reply_markup=kb_worker_select_taste_lemonade)
     elif data['product'] == 'Смузи':
-        await message.answer('Выберите Вкус Смузи', reply_markup=kb_worker_select_taste_smoothie)
+        await message.answer('Выберите вкус смузи', reply_markup=kb_worker_select_taste_smoothie)
     elif data['product'] == 'Вафля':
-        await message.answer('Вы добавили вафлю в заказ', reply_markup=kb_worker_create_order)
-        #! ТУТ НУЖНО ЗАБИРАТЬ ВАФЛЮ
+        append_product_to_order(get_dict_items(
+            data), get_number_being_created_order(message.from_user.id))
+        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
         await state.finish()
-    elif data['product'] == 'Молочный_Коктель':
-        await message.answer('Выберите Вкус Молчного Коктеля', reply_markup=kb_worker_select_taste_milkshake)
+    elif data['product'] == 'Молочный_коктель':
+        await message.answer('Выберите вкус молчного коктеля', reply_markup=kb_worker_select_taste_milkshake)
     else:
         await message.answer('Такого продукта нет!', reply_markup=kb_worker_create_order)
         await state.finish()
@@ -126,8 +126,9 @@ async def select_taste(message: types.Message, state: FSMContext):
             data['additions'] = ''
     else:
         async with state.proxy() as data:
-            await message.answer(str(data),  reply_markup=kb_worker_create_order)
-        #! ТУТ НУЖНО
+            append_product_to_order(get_dict_items(
+                data), get_number_being_created_order(message.from_user.id))
+            await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
         await state.finish()
 
 
@@ -139,13 +140,13 @@ async def select_toping(message: types.Message, state: FSMContext):
         await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
     elif message.text == 'Без_Посыпки':
         async with state.proxy() as data:
-            data['additions'] = message.text
+            data['additions'] = f'{message.text} '
         await FSMProducts.next()
         await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
     else:
         async with state.proxy() as data:
-            data['additions'] += message.text + ' '
-            await message.answer(f'Есть {message.text}')
+            data['additions'] += f'{message.text} '
+            await message.answer(f'Добавлена посыпка: {message.text}')
 
 
 # Выбор топинга для мороженного
@@ -154,8 +155,9 @@ async def select_toping(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         data['toping'] = message.text
     async with state.proxy() as data:
-        await message.answer(str(data),  reply_markup=kb_worker_create_order)
-    #! ТУТ НУЖНО
+        append_product_to_order(get_dict_items(
+            data), get_number_being_created_order(message.from_user.id))
+        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
     await state.finish()
 
 
@@ -163,17 +165,17 @@ async def select_toping(message: types.Message, state: FSMContext):
 @ dp.message_handler(commands=['Отменить_создание_заказа'])
 async def complete_creating_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'Вы отменили создание заказа №{get_count_being_created_order(message.from_user.id)}. <strong>Заказ считается удаленным!</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
-        remove_order(get_count_being_created_order(message.from_user.id))
+        await message.answer(f'Вы отменили создание заказа №{get_number_being_created_order(message.from_user.id)}. <strong>Заказ удален!</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
+        remove_order(get_number_being_created_order(message.from_user.id))
 
 
 # Команда завершения создания заказа
 @ dp.message_handler(commands=['Завершить_создание_заказа'])
 async def complete_creating_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'Вы завершили создание заказа №{get_count_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_count_being_created_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
+        await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
         complete_create_order(
-            get_count_being_created_order(message.from_user.id))
+            get_number_being_created_order(message.from_user.id))
 
 
 # Команда просмотра текущих заказов

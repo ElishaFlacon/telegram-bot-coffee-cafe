@@ -13,7 +13,7 @@ k_end_session = KeyboardButton('/Закрыть_смену')
 
 
 # Кнопки для сбора заказа
-k_order_append_product = KeyboardButton('/Добавить_Продукт')
+k_order_append_product = KeyboardButton('/Добавить_продукт')
 k_complete_create_order = KeyboardButton('/Завершить_создание_заказа')
 k_cancel_create_order = KeyboardButton('/Отменить_создание_заказа')
 
@@ -24,7 +24,7 @@ k_product_tea = KeyboardButton('Чай')
 k_product_lemonade = KeyboardButton('Лимонад')
 k_product_smoothie = KeyboardButton('Смузи')
 k_product_waffle = KeyboardButton('Вафля')
-k_product_milkshake = KeyboardButton('Молочный_Коктель')
+k_product_milkshake = KeyboardButton('Молочный_коктель')
 k_cancel_append_product = KeyboardButton('ОТМЕНА')
 
 
@@ -34,10 +34,10 @@ k_taste_icecream_orio = KeyboardButton('Орио')
 k_taste_icecream_kiwi = KeyboardButton('Киви')
 k_taste_icecream_pistachios = KeyboardButton('Фисташки')
 k_taste_icecream_nutella = KeyboardButton('Нутелла')
-k_taste_icecream_kit_kat = KeyboardButton('Кит_Кат')
+k_taste_icecream_kit_kat = KeyboardButton('Кит_кат')
 k_taste_icecream_pineapple = KeyboardButton('Ананас')
 k_taste_icecream_rofaello = KeyboardButton('Рофаэлло')
-k_taste_icecream_love_is = KeyboardButton('Лове_Ис')
+k_taste_icecream_love_is = KeyboardButton('Лове_ис')
 
 
 # Кнопки выбора посыпок для мороженого
@@ -47,7 +47,7 @@ k_addition_icecream_marshmallows = KeyboardButton('Маршмеллов')
 k_addition_icecream_chocolate = KeyboardButton('Шоколад')
 k_addition_icecream_coconut = KeyboardButton('Кокос')
 k_addition_icecream_mandms = KeyboardButton('m&ms')
-k_addition_icecream_none = KeyboardButton('Без_Посыпки')
+k_addition_icecream_none = KeyboardButton('Без_посыпки')
 k_addition_icecream_complete = KeyboardButton('Завершить')
 
 
@@ -56,27 +56,27 @@ k_topping_icecream_strawberry = KeyboardButton('Клубника')
 k_topping_icecream_banana = KeyboardButton('Банан')
 k_topping_icecream_chocolate = KeyboardButton('Шоколад')
 k_topping_icecream_caramel = KeyboardButton('Карамель')
-k_topping_icecream_none = KeyboardButton('Без_Топинга')
+k_topping_icecream_none = KeyboardButton('Без_топинга')
 
 
 # Кнопки выбора вкуса чая
-k_taste_tea_buckthorn_mint = KeyboardButton('Облипиха_Мята')
-k_taste_tea_raspberry_mint_basil = KeyboardButton('Малина_Мята_Базилик')
-k_taste_tea_strawberry_basil = KeyboardButton('Клубника_Базилик')
-k_taste_tea_lemon_ginger = KeyboardButton('Лимон_Имбирь')
+k_taste_tea_buckthorn_mint = KeyboardButton('Облипиха_мята')
+k_taste_tea_raspberry_mint_basil = KeyboardButton('Малина_мята_базилик')
+k_taste_tea_strawberry_basil = KeyboardButton('Клубника_базилик')
+k_taste_tea_lemon_ginger = KeyboardButton('Лимон_имбирь')
 
 
 # Кнопки выбора вкуса лимонада
 k_taste_lemonade_mojito = KeyboardButton('Мохито')
 k_taste_lemonade_lemon = KeyboardButton('Лимон')
-k_taste_lemonade_buble_gum = KeyboardButton('Бабл_Гам')
+k_taste_lemonade_buble_gum = KeyboardButton('Бабл_гам')
 k_taste_lemonade_strawberry = KeyboardButton('Клубника')
 k_taste_lemonade_coconut = KeyboardButton('Кокос')
 k_taste_lemonade_passionflora = KeyboardButton('Маракуйя')
 
 
 # Кнопки выбора вкуса смузи
-k_taste_smoothie_garnet_kiss = KeyboardButton('Гранатовый_Поцелуй')
+k_taste_smoothie_garnet_kiss = KeyboardButton('Гранатовый_поцелуй')
 k_taste_smoothie_vit = KeyboardButton('Витаминный')
 k_taste_smoothie_grape = KeyboardButton('Виноградник')
 k_taste_smoothie_pinacolada = KeyboardButton('Пинаколада')

@@ -38,8 +38,8 @@ def get_count_all_orders():
     return int(ORDERS_SHEET.max_row) - 1
 
 
-# Получаем количество создающихся заказов
-def get_count_being_created_order(worker_id):
+# Получаем номер заказа (последний создающийся заказ)
+def get_number_being_created_order(worker_id):
     num_order = []
     max_rw_orders = ORDERS_SHEET.max_row
     for i in range(max_rw_orders):
