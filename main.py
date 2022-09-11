@@ -1,4 +1,5 @@
 from itertools import product
+from nis import match
 from aiogram import Bot, Dispatcher, executor, types
 import logging
 from aiogram.types import ReplyKeyboardRemove
@@ -83,7 +84,22 @@ async def select_product(message: types.Message, state: FSMContext):
     await FSMProducts.next()
     if data['product'] == 'Мороженое':
         await message.answer('Выберите Вкус Мороженки', reply_markup=kb_worker_select_taste_icecream)
-    await message.answer('Выберите Вкус')
+    elif data['product'] == 'Чай':
+        await message.answer('Выберите Вкус Чая', reply_markup=kb_worker_select_taste_tea)
+    elif data['product'] == 'Лимонад':
+        await message.answer('Выберите Вкус Лимонада', reply_markup=kb_worker_select_taste_lemonade)
+    elif data['product'] == 'Смузи':
+        await message.answer('Выберите Вкус Смузи', reply_markup=kb_worker_select_taste_smoothie)
+    elif data['product'] == 'Вафля':
+        await message.answer('Вы добавили вафлю в заказ', reply_markup=kb_worker_create_order)
+        #! ТУТ НУЖНО ЗАБИРАТЬ ВАФЛЮ
+        await state.finish()
+    elif data['product'] == 'Молочный_Коктель':
+        await message.answer('Выберите Вкус Молчного Коктеля', reply_markup=kb_worker_select_taste_milkshake)
+    else:
+        await message.answer('Такого продукта нет!', reply_markup=kb_worker_create_order)
+        #!! Тут нужно сделать удаление
+        await state.finish()
 
 
 #! Выбор вкуса

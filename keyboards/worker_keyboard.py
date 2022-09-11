@@ -23,48 +23,73 @@ k_product_icecream = KeyboardButton('Мороженое')
 k_product_tea = KeyboardButton('Чай')
 k_product_lemonade = KeyboardButton('Лимонад')
 k_product_smoothie = KeyboardButton('Смузи')
-k_product_waffle = KeyboardButton('Вафлю')
-k_product_milkshake = KeyboardButton('Молочный_коктель')
+k_product_waffle = KeyboardButton('Вафля')
+k_product_milkshake = KeyboardButton('Молочный_Коктель')
+k_cancel_append_product = KeyboardButton('/НАЗАД')
+
 
 # Кнопки выбора вкуса мороженого
-k_taste_icecream_banana = KeyboardButton('/Добавить _вкус_банан')
-k_taste_icecream_orio = KeyboardButton('/Добавить _вкус_орио')
-k_taste_icecream_kiwi = KeyboardButton('/Добавить _вкус_киви')
-k_taste_icecream_pistachios = KeyboardButton('/Добавить _вкус_фисташки')
-k_taste_icecream_nutella = KeyboardButton('/Добавить _вкус_нутелла')
-k_taste_icecream_kit_kat = KeyboardButton('/Добавить _вкус_кит-кат')
-k_taste_icecream_pineapple = KeyboardButton('/Добавить _вкус_ананас')
-k_taste_icecream_rofaello = KeyboardButton('/Добавить _вкус_рофаэлло')
-k_taste_icecream_love_is = KeyboardButton('/Добавить _вкус_лове-ис')
+k_taste_icecream_banana = KeyboardButton('Банан')
+k_taste_icecream_orio = KeyboardButton('Орио')
+k_taste_icecream_kiwi = KeyboardButton('Киви')
+k_taste_icecream_pistachios = KeyboardButton('Фисташки')
+k_taste_icecream_nutella = KeyboardButton('Нутелла')
+k_taste_icecream_kit_kat = KeyboardButton('Кит_Кат')
+k_taste_icecream_pineapple = KeyboardButton('Ананас')
+k_taste_icecream_rofaello = KeyboardButton('Рофаэлло')
+k_taste_icecream_love_is = KeyboardButton('Лове_Ис')
 
 
 # Кнопки выбора посыпок для мороженого
-k_addition_icecream_marmalade = KeyboardButton('/Добавить _посыпку_мармелад')
-k_addition_icecream_cream = KeyboardButton('/Добавить _посыпку_сливки')
-k_addition_icecream_marshmallows = KeyboardButton(
-    '/Добавить _посыпку_маршмеллов')
-k_addition_icecream_chocolate = KeyboardButton('/Добавить _посыпку_шоколад')
-k_addition_icecream_coconut = KeyboardButton('/Добавить _посыпку_кокос')
-k_addition_icecream_mandms = KeyboardButton('/Добавить _посыпку_m&ms')
-k_addition_icecream_none = KeyboardButton('/Добавить _без_посыпки')
-k_complete_append_addition_icecream = KeyboardButton(
-    '/Завершить_добовление_посыпок')
+k_addition_icecream_marmalade = KeyboardButton('Мармелад')
+k_addition_icecream_cream = KeyboardButton('Сливки')
+k_addition_icecream_marshmallows = KeyboardButton('Маршмеллов')
+k_addition_icecream_chocolate = KeyboardButton('Шоколад')
+k_addition_icecream_coconut = KeyboardButton('Кокос')
+k_addition_icecream_mandms = KeyboardButton('m&ms')
+k_addition_icecream_none = KeyboardButton('Без_Посыпки')
+k_addition_icecream_complete = KeyboardButton('/Завершить_добовление_посыпок')
 
 
-# Кнопки добовления топинга
-k_topping_icecream_strawberry = KeyboardButton('/Добавить _топинг_клубника')
-k_topping_icecream_banana = KeyboardButton('/Добавить _топинг_банан')
-k_topping_icecream_chocolate = KeyboardButton('/Добавить _топинг_шоколад')
-k_topping_icecream_caramel = KeyboardButton('/Добавить _топинг_карамель')
-k_topping_icecream_none = KeyboardButton('/Добавить _без_топинга')
+# Кнопки добовления топинга для мороженного
+k_topping_icecream_strawberry = KeyboardButton('Клубника')
+k_topping_icecream_banana = KeyboardButton('Банан')
+k_topping_icecream_chocolate = KeyboardButton('Шоколад')
+k_topping_icecream_caramel = KeyboardButton('Карамель')
+k_topping_icecream_none = KeyboardButton('Без_Топинга')
 
 
-# ! Тут будут некст кнопки
-# Кнопки вкуса лимонада
-# Кнопки вкуса смузи
-# Кнопки вкуса чая
-# Кнопки вкус молочного коктеля
-# Кнопки
+# Кнопки выбора вкуса чая
+k_taste_tea_buckthorn_mint = KeyboardButton('Облипиха_Мята')
+k_taste_tea_raspberry_mint_basil = KeyboardButton('Малина_Мята_Базилик')
+k_taste_tea_strawberry_basil = KeyboardButton('Клубника_Базилик')
+k_taste_tea_lemon_ginger = KeyboardButton('Лимон_Имбирь')
+
+
+# Кнопки выбора вкуса лимонада
+k_taste_lemonade_mojito = KeyboardButton('Мохито')
+k_taste_lemonade_lemon = KeyboardButton('Лимон')
+k_taste_lemonade_buble_gum = KeyboardButton('Бабл_Гам')
+k_taste_lemonade_strawberry = KeyboardButton('Клубника')
+k_taste_lemonade_coconut = KeyboardButton('Кокос')
+k_taste_lemonade_passionflora = KeyboardButton('Маракуйя')
+
+
+# Кнопки выбора вкуса смузи
+k_taste_smoothie_garnet_kiss = KeyboardButton('Гранатовый_Поцелуй')
+k_taste_smoothie_vit = KeyboardButton('Витаминный')
+k_taste_smoothie_grape = KeyboardButton('Виноградник')
+k_taste_smoothie_pinacolada = KeyboardButton('Пинаколада')
+k_taste_smoothie_tropic = KeyboardButton('Тропикано')
+
+
+# Кнопки выбора вкуса молочного коктеля
+k_taste_milk_banana = KeyboardButton('Банан')
+k_taste_milk_chocolate = KeyboardButton('Шоколад')
+k_taste_milk_strawberry = KeyboardButton('Клубника')
+k_taste_milk_vanilla = KeyboardButton('Ваниль')
+k_taste_milk_nutella = KeyboardButton('Нутелла')
+k_taste_milk_neskvik = KeyboardButton('Несквик')
 
 
 # Инлайн кнопки, для завершения заказа или его отмены
@@ -78,7 +103,7 @@ def create_inline_keyboard(num_order):
         k_complete_order).add(k_remove_order)
 
 
-# Инициализируем клавиатуры
+#! Инициализируем клавиатуры
 # Старта смены
 kb_worker_start_session = ReplyKeyboardMarkup(resize_keyboard=True)
 # Основного меню
@@ -89,16 +114,23 @@ kb_worker_end_session = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_worker_create_order = ReplyKeyboardMarkup(resize_keyboard=True)
 # Выбора продукта
 kb_worker_append_product = ReplyKeyboardMarkup(resize_keyboard=True)
-
 # Выбора вкуса мороженного
 kb_worker_select_taste_icecream = ReplyKeyboardMarkup(resize_keyboard=True)
 # Выбора посыпки для мороженного
 kb_worker_select_additions_icecream = ReplyKeyboardMarkup(resize_keyboard=True)
-# Добовления топинга
+# Добовления топинга для мороженного
 kb_worker_select_topping_icecream = ReplyKeyboardMarkup(resize_keyboard=True)
+# Выбор вкуса чая
+kb_worker_select_taste_tea = ReplyKeyboardMarkup(resize_keyboard=True)
+# Выбор вкуса лимонада
+kb_worker_select_taste_lemonade = ReplyKeyboardMarkup(resize_keyboard=True)
+# Выбор вкуса смузи
+kb_worker_select_taste_smoothie = ReplyKeyboardMarkup(resize_keyboard=True)
+# Выбор вкуса молочного коктеля
+kb_worker_select_taste_milkshake = ReplyKeyboardMarkup(resize_keyboard=True)
 
 
-# Отображаем клавиатуры
+#! Отображаем клавиатуры
 # Старта смены
 kb_worker_start_session.row(k_start_session)
 # Основного меню
@@ -118,6 +150,18 @@ kb_worker_select_taste_icecream.row(k_taste_icecream_banana, k_taste_icecream_or
 # Выбора посыпки для мороженного
 kb_worker_select_additions_icecream.row(k_addition_icecream_marmalade, k_addition_icecream_cream).row(k_addition_icecream_marshmallows, k_addition_icecream_chocolate).row(
     k_addition_icecream_coconut, k_addition_icecream_mandms).row(k_addition_icecream_none)
-# Добовления топинга
+# Добовления топинга для мороженного
 kb_worker_select_topping_icecream.row(k_topping_icecream_strawberry, k_topping_icecream_banana).row(
     k_topping_icecream_chocolate, k_topping_icecream_caramel).row(k_topping_icecream_none)
+# Выбор вкуса чая
+kb_worker_select_taste_tea.row(k_taste_tea_buckthorn_mint, k_taste_tea_raspberry_mint_basil).row(
+    k_taste_tea_strawberry_basil, k_taste_tea_lemon_ginger)
+# Выбор вкуса лимонада
+kb_worker_select_taste_lemonade.row(k_taste_lemonade_mojito, k_taste_lemonade_lemon).row(
+    k_taste_lemonade_buble_gum, k_taste_lemonade_strawberry).row(k_taste_lemonade_coconut, k_taste_lemonade_passionflora)
+# Выбор вкуса смузи
+kb_worker_select_taste_smoothie.row(k_taste_smoothie_garnet_kiss, k_taste_smoothie_vit).row(
+    k_taste_smoothie_grape, k_taste_smoothie_pinacolada).row(k_taste_smoothie_tropic)
+# Выбор вкуса молочного коктеля
+kb_worker_select_taste_milkshake.row(k_taste_milk_banana, k_taste_milk_chocolate).row(
+    k_taste_milk_strawberry, k_taste_milk_vanilla).row(k_taste_milk_nutella, k_taste_milk_neskvik)
