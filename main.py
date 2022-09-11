@@ -103,11 +103,47 @@ async def select_product(message: types.Message, state: FSMContext):
 
 #! Выбор вкуса
 @dp.message_handler(state=FSMProducts.taste)
-async def select_product(message: types.Message, state: FSMContext):
+async def select_taste(message: types.Message, state: FSMContext):
     # Тут в словарь сохраняем данные
     async with state.proxy() as data:
         data['taste'] = message.text
-    await FSMProducts.next()
+    # Проверка на мороженное чтобы потом топинги мы смогли добавить
+    if data['product'] == 'Мороженое':
+        await message.answer('Выберите ПОСЫПКУ Мороженки', reply_markup=kb_worker_select_additions_icecream)
+        await FSMProducts.next()
+        # Задаем значение для посыпки
+        # Чтобы можно было нормально записать сразу несколько посыпок
+        # Иначе я не придумал
+        async with state.proxy() as data:
+            data['additions'] = ''
+    else:
+        async with state.proxy() as data:
+            await message.answer(str(data),  reply_markup=kb_worker_create_order)
+        await state.finish()
+
+
+#! ПОСЫПКА
+@dp.message_handler(state=FSMProducts.additions)
+async def select_toping(message: types.Message, state: FSMContext):
+    if message.text == 'ЗЗ':
+        await FSMProducts.next()
+        await message.answer('Выберите ТОПИНГ Мороженки', reply_markup=kb_worker_select_topping_icecream)
+    elif message.text == 'Без_Посыпки':
+        async with state.proxy() as data:
+            data['additions'] = message.text
+        await FSMProducts.next()
+        await message.answer('Выберите ТОПИНГ Мороженки', reply_markup=kb_worker_select_topping_icecream)
+    else:
+        async with state.proxy() as data:
+            data['additions'] += message.text + ' '
+            await message.answer(f'Есть {message.text}')
+
+
+#! ТОПИНГ
+@dp.message_handler(state=FSMProducts.topping)
+async def select_toping(message: types.Message, state: FSMContext):
+    async with state.proxy() as data:
+        data['toping'] = message.text
     async with state.proxy() as data:
         await message.answer(str(data),  reply_markup=kb_worker_create_order)
     await state.finish()
