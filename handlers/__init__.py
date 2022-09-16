@@ -1,0 +1,3 @@
+from handlers.worker_handlers import register_worker_handlers
+from handlers.other_handlers import register_other_handlers
+from handlers.admin_handlers import register_admin_handlers
