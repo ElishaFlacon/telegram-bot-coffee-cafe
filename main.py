@@ -101,7 +101,7 @@ async def select_product(message: types.Message, state: FSMContext):
     elif data['product'] == 'Вафля':
         append_product_to_order(get_dict_items(
             data), get_number_being_created_order(message.from_user.id))
-        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
+        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)}: {get_all_products(get_number_being_created_order(message.from_user.id))}', reply_markup=kb_worker_create_order)
         await state.finish()
     elif data['product'] == 'Молочный_коктель':
         await message.answer('Выберите вкус молчного коктеля', reply_markup=kb_worker_select_taste_milkshake)
@@ -128,7 +128,7 @@ async def select_taste(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             append_product_to_order(get_dict_items(
                 data), get_number_being_created_order(message.from_user.id))
-            await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
+            await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)}: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
         await state.finish()
 
 
@@ -157,7 +157,7 @@ async def select_toping(message: types.Message, state: FSMContext):
     async with state.proxy() as data:
         append_product_to_order(get_dict_items(
             data), get_number_being_created_order(message.from_user.id))
-        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)} выглядит вот так: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
+        await message.answer(f'Заказ №{get_number_being_created_order(message.from_user.id)}: {get_all_products(get_number_being_created_order(message.from_user.id))}',  reply_markup=kb_worker_create_order)
     await state.finish()
 
 
@@ -173,7 +173,9 @@ async def complete_creating_order(message: types.Message):
 @ dp.message_handler(commands=['Завершить_создание_заказа'])
 async def complete_creating_order(message: types.Message):
     if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-        await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}</strong>', parse_mode='html', reply_markup=kb_worker_main_menu)
+        await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}Цена: {get_order_price(get_number_being_created_order(message.from_user.id))} Р.</strong> ', parse_mode='html', reply_markup=kb_worker_main_menu)
+        load_order_price(get_order_price(get_number_being_created_order(
+            message.from_user.id)), get_number_being_created_order(message.from_user.id))
         complete_create_order(
             get_number_being_created_order(message.from_user.id))
 
@@ -185,7 +187,7 @@ async def check_actua_orders(message: types.Message):
         for i in range(get_count_all_orders()):
             # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
             if check_running_orders(i+1) == True:
-                await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)}</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
+                await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)} Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
 
 
 # Команда просмотра завершенных заказов
@@ -195,7 +197,7 @@ async def check_actua_orders(message: types.Message):
         for i in range(get_count_all_orders()):
             # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
             if check_completed_orders(i+1) == True:
-                await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)}</strong>', parse_mode='html')
+                await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)} Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html')
 
 
 # Тут будут все команды от инлайн кнопок
@@ -224,9 +226,3 @@ async def end_session(message: types.Message):
 # ЗАПУСК
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True, on_startup=on_startup())
-
-
-# Немного мусора, пуусть лежит
- # append_product_to_order(get_product(
-    #                         message.text), get_count_being_created_order(message.from_user.id))
-    # await message.answer(f'Вы добавили в заказ №{get_count_being_created_order(message.from_user.id)}: <strong>{get_product(message.text)}</strong>', parse_mode='html')

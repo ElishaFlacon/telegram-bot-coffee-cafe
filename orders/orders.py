@@ -48,6 +48,16 @@ def get_number_being_created_order(worker_id):
     return str(max(num_order))
 
 
+# Получаем номер заказа (последний выполняющийся заказ)
+def get_number_process_order(worker_id):
+    num_order = []
+    max_rw_orders = ORDERS_SHEET.max_row
+    for i in range(max_rw_orders):
+        if str(ORDERS_SHEET[f'A{i+1}'].value) == str(worker_id) and str(ORDERS_SHEET[f'C{i+1}'].value) == 'Выполняется':
+            num_order.append(str(int(ORDERS_SHEET[f'B{i+1}'].value)))
+    return str(max(num_order))
+
+
 # Выполняем заказ
 def complete_order(num_order):
     max_rw_orders = ORDERS_SHEET.max_row
