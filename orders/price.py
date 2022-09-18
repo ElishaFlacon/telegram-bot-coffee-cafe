@@ -15,7 +15,7 @@ def get_order_price(num_order):
             for j in ORDERS_SHEET[f'G{i+1}'].value.split('; ')[:-1]:
                 for l in range(max_rw_products):
                     # Тут проверка на продукт и вкус
-                    if j.lower().find(PRODUCTS_SHEET[f'A{l+1}'].value) == 0:
+                    if j.lower().find(str(PRODUCTS_SHEET[f'A{l+1}'].value)) == 0:
                         a = PRODUCTS_SHEET[f'B{l+1}'].value
                         order_price += int(a)
                     # А тут проверка на посыпку и топинг
@@ -24,7 +24,7 @@ def get_order_price(num_order):
                     # И соответственно возвращает их
                     # А до + который является началом для посыпок достаточно далеко, а топинг еще дальше
                     # Но минимально лучше оставить 5
-                    elif j.lower().find(PRODUCTS_SHEET[f'A{l+1}'].value) >= 5:
+                    elif j.lower().find(str(PRODUCTS_SHEET[f'A{l+1}'].value)) >= 5:
                         for i in j.lower().split():
                             if i.find('+') >= 0:
                                 # Проверка нужна, потому что первая посыпка бесплатная

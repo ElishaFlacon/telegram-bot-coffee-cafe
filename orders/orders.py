@@ -1,6 +1,5 @@
 from data import *
 import datetime
-from orders.products import get_all_products
 
 
 # Создаем новый заказ
@@ -16,7 +15,7 @@ def create_new_order(worker_id):
                     ORDERS_SHEET[f'B{i+1}'] = str(int(
                         ORDERS_SHEET[f'A{i+1}'].row - 1))
                     ORDERS_SHEET[f'C{i+1}'] = 'Создается'
-                    ORDERS_SHEET[f'F{i+1}'] = str(datetime.datetime.now())
+                    ORDERS_SHEET[f'F{i+1}'] = str(datetime.datetime.now())[:-7]
                     save_data()
                     return str(int(ORDERS_SHEET[f'A{i+1}'].row - 1))
 
@@ -27,7 +26,7 @@ def complete_create_order(num_order):
     for i in range(max_rw_orders):
         if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == 'Создается':
             ORDERS_SHEET[f'C{i+1}'] = 'Выполняется'
-            ORDERS_SHEET[f'F{i+1}'] = str(datetime.datetime.now())
+            ORDERS_SHEET[f'F{i+1}'] = str(datetime.datetime.now())[:-7]
     save_data()
 
 

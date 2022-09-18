@@ -45,3 +45,39 @@ def append_product_to_order(product, num_order):
             else:
                 ORDERS_SHEET[f'G{i+1}'] = ORDERS_SHEET[f'G{i+1}'].value + product
     save_data()
+
+
+# Уменьшаем количество продуктов
+def reduce_products_count(num_order):
+    max_rw_products = PRODUCTS_SHEET.max_row
+    max_rw_orders = ORDERS_SHEET.max_row
+    for i in range(max_rw_orders):
+        if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order):
+            # Пробел в сплите, после ; нужен, просто необходим, наверно))
+            # [:-1] нужен, зачем? а потому что в конце массива появлялась пустая строка
+            # через иф не убиралась, так что вырежем так))
+            for j in ORDERS_SHEET[f'G{i+1}'].value.split('; ')[:-1]:
+                for l in range(max_rw_products):
+                    # Тут проверка на продукт и вкус
+                    if j.lower().find(str(PRODUCTS_SHEET[f'A{l+1}'].value)) == 0:
+                        PRODUCTS_SHEET[f'C{l+1}'] = str(
+                            int(PRODUCTS_SHEET[f'C{l+1}'].value) - 1)
+    save_data()
+
+
+# Увеличиваем количество продуктов
+def increasing_products_count(num_order, count):
+    max_rw_products = PRODUCTS_SHEET.max_row
+    max_rw_orders = ORDERS_SHEET.max_row
+    for i in range(max_rw_orders):
+        if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order):
+            # Пробел в сплите, после ; нужен, просто необходим, наверно))
+            # [:-1] нужен, зачем? а потому что в конце массива появлялась пустая строка
+            # через иф не убиралась, так что вырежем так))
+            for j in ORDERS_SHEET[f'G{i+1}'].value.split('; ')[:-1]:
+                for l in range(max_rw_products):
+                    # Тут проверка на продукт и вкус
+                    if j.lower().find(str(PRODUCTS_SHEET[f'A{l+1}'].value)) == 0:
+                        PRODUCTS_SHEET[f'C{l+1}'] = str(
+                            int(PRODUCTS_SHEET[f'C{l+1}'].value) - int(count))
+    save_data()

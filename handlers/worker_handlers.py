@@ -4,6 +4,7 @@ from aiogram.types import ReplyKeyboardRemove
 from keyboards.worker_keyboard import *
 from verification.worker_verify import *
 from session.worker_session import *
+from cash import *
 from orders import *
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
@@ -108,7 +109,7 @@ async def select_additions(message: types.Message, state: FSMContext):
     if message.text == 'Завершить':
         await FSMProducts.next()
         await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
-    elif message.text == 'Без_Посыпки':
+    elif message.text == 'Без_посыпки':
         async with state.proxy() as data:
             data['additions'] = f'{message.text} '
         await FSMProducts.next()
@@ -175,9 +176,13 @@ async def check_complete_orders(message: types.Message):
 async def inline_keyboards_commands(callback: types.CallbackQuery):
     if callback.data.split()[0] == '++':
         await callback.answer(f'🟩 Заказ №{callback.data.split()[1]} Завершен!')
+        await callback.message.delete()
+        reduce_products_count(callback.data.split()[1])
+        append_money_to_cash(get_order_price(callback.data.split()[1]), False)
         complete_order(callback.data.split()[1])
     elif callback.data.split()[0] == '--':
         await callback.answer(f'🟥 Заказ №{callback.data.split()[1]} Удален!')
+        await callback.message.delete()
         remove_order(callback.data.split()[1])
 
 

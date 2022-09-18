@@ -4,9 +4,9 @@ from handlers import *
 
 
 #! Инициализируем хендлеры
+register_admin_handlers(dp)
 register_worker_handlers(dp)
 register_other_handlers(dp)
-register_admin_handlers(dp)
 
 
 #! Запуск
