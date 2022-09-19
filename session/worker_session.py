@@ -39,7 +39,7 @@ def worker_end_session(worker_id):
 def append_start_session_on_data(worker_name):
     try:
         max_rw = SESSIONS_SHEET.max_row
-        for i in range(max_rw + 1):
+        for i in range(max_rw):
             if SESSIONS_SHEET[f'A{i+1}'].value == None:
                 SESSIONS_SHEET[f'A{i+1}'] = str(worker_name)
                 SESSIONS_SHEET[f'B{i+1}'] = str(datetime.now())[:-7]
