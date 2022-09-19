@@ -24,11 +24,12 @@ async def start_session(message: types.Message):
     try:
         # Если у мужика смена не начата
         if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == False:
-            worker_start_session(message.from_user.idl)
-            await message.answer(f'{message.from_user.full_name}, Вы начали смену!', reply_markup=kb_worker_main_menu)
+            worker_start_session(message.from_user.id)
+            append_start_session_on_data(get_worker_name(message.from_user.id))
+            await message.answer(f'{get_worker_name(message.from_user.id)}, Вы начали смену!', reply_markup=kb_worker_main_menu)
         # Если у мужика смена уже начата
-        elif worker_vefify(message.from_user.idl) == True and worker_session_status(message.from_user.id) == True:
-            await message.answer(f'{message.from_user.full_name}, Завершите прошлую смену, чтобы начать новую смену!', reply_markup=kb_worker_end_session)
+        elif worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
+            await message.answer(f'{get_worker_name(message.from_user.id)}, Завершите прошлую смену, чтобы начать новую смену!', reply_markup=kb_worker_end_session)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
         print(f'worker_handlers Строка №34 - {e}')
@@ -246,7 +247,8 @@ async def end_session(message: types.Message):
         # Если у мужика смена открыта
         if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
             worker_end_session(message.from_user.id)
-            await message.answer(f'{message.from_user.full_name}, Закрыл вашу смену', reply_markup=ReplyKeyboardRemove())
+            append_end_session_on_data(get_worker_name(message.from_user.id))
+            await message.answer(f'{get_worker_name(message.from_user.id)}, Закрыл вашу смену', reply_markup=ReplyKeyboardRemove())
         # Если у мужика смена уже закрыта
         elif worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == False:
             await message.answer(f'<strong>Вы уже закрыли смену!</strong>\nЕсли вы не закрывали смену, обратитесь к Администратору!', reply_markup=ReplyKeyboardRemove(), parse_mode='html')
