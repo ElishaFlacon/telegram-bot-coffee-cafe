@@ -94,13 +94,17 @@ k_taste_milk_neskvik = KeyboardButton('Несквик')
 
 # Инлайн кнопки, для завершения заказа или его отмены
 def create_inline_keyboard(num_order):
-    k_complete_order = InlineKeyboardButton(
-        text=f'🟩 Выполнить заказ №{num_order} 🟩', callback_data=f'++ {num_order}')
-    k_remove_order = InlineKeyboardButton(
-        text=f'🟥 Удалить заказ №{num_order} 🟥', callback_data=f'-- {num_order}')
-    kb_worker_comoleted_and_remove_order = InlineKeyboardMarkup(row_width=2)
-    return kb_worker_comoleted_and_remove_order.add(
-        k_complete_order).add(k_remove_order)
+    try:
+        k_complete_order = InlineKeyboardButton(
+            text=f'🟩 Выполнить заказ №{num_order} 🟩', callback_data=f'++ {num_order}')
+        k_remove_order = InlineKeyboardButton(
+            text=f'🟥 Удалить заказ №{num_order} 🟥', callback_data=f'-- {num_order}')
+        kb_worker_comoleted_and_remove_order = InlineKeyboardMarkup(
+            row_width=2)
+        return kb_worker_comoleted_and_remove_order.add(
+            k_complete_order).add(k_remove_order)
+    except Exception as e:
+        print(f'worker_keyboard Строка №106 - {e}')
 
 
 #! Инициализируем клавиатуры

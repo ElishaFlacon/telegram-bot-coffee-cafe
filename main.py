@@ -4,11 +4,18 @@ from handlers import *
 
 
 #! Инициализируем хендлеры
-register_admin_handlers(dp)
-register_worker_handlers(dp)
-register_other_handlers(dp)
+try:
+    register_admin_handlers(dp)
+    register_worker_handlers(dp)
+    register_other_handlers(dp)
+except Exception as e:
+    print(f'main ОШИБКА ИНИЦИАЛИЗАЦИИ ХЕНДЛЕРОВ - {e}')
 
 
 #! Запуск
-if __name__ == '__main__':
-    executor.start_polling(dp, skip_updates=True, on_startup=print('!ПУСК!'))
+try:
+    if __name__ == '__main__':
+        executor.start_polling(dp, skip_updates=True,
+                               on_startup=print('!ПУСК!'))
+except Exception as e:
+    print(f'main ОШИБКА ЗАПУСКА ПРИЛОЖЕНИЯ - {e}')

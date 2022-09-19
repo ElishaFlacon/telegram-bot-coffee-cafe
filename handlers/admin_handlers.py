@@ -6,4 +6,7 @@ from create import dp
 
 #! Регистрация всех хендлеров
 def register_admin_handlers(dp: Dispatcher):
-    pass
+    try:
+        pass
+    except Exception as e:
+        print(f'admin_handlers ОШИБКА РЕГИСТРАЦИИ ХЕНДЛЕРОВ - {e}')

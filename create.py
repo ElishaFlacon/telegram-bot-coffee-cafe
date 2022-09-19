@@ -5,7 +5,10 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 
 
 # Логинимся, инициализируем бота и диспетчера и инициализируем память
-storage = MemoryStorage()
-logging.basicConfig(level=logging.INFO)
-bot = Bot(token=API_TOKEN)
-dp = Dispatcher(bot, storage=storage)
+try:
+    storage = MemoryStorage()
+    logging.basicConfig(level=logging.INFO)
+    bot = Bot(token=API_TOKEN)
+    dp = Dispatcher(bot, storage=storage)
+except Exception as e:
+    print(f'create ОШИБКА СОЗДАНИЯ БОТА - {e}')
