@@ -18,6 +18,11 @@ class FSMProducts(StatesGroup):
     topping = State()
 
 
+# Машина состояний для выбора способа оплаты
+class FSMPaymentMethod(StatesGroup):
+    method = State()
+
+
 # Команда начала смены
 # * @dp.message_handler(commands=['Начать_смену'])
 async def start_session(message: types.Message):
@@ -182,14 +187,39 @@ async def cancel_creating_order(message: types.Message):
 async def complete_creating_order(message: types.Message):
     try:
         if worker_vefify(message.from_user.id) == True and worker_session_status(message.from_user.id) == True:
-            await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}Цена: {get_order_price(get_number_being_created_order(message.from_user.id))} Р.</strong> ', parse_mode='html', reply_markup=kb_worker_main_menu)
+            await FSMPaymentMethod.method.set()
+            await message.answer('Выберите способ оплаты', reply_markup=kb_worker_payment_method)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
+        print(f'worker_handlers Строка №191 - {e}')
+
+
+# Команда выбора способа оплаты
+# * @dp.message_handler(state=FSMPaymentMethod.method)
+async def select_payment_method(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['method'] = message.text
+        if data['method'] == 'КАРТА':
+            await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}\nОплата по Карте\nЦена: {get_order_price(get_number_being_created_order(message.from_user.id))} Р.</strong> ', parse_mode='html', reply_markup=kb_worker_main_menu)
+            load_payment_method(
+                True, get_number_being_created_order(message.from_user.id))
             load_order_price(get_order_price(get_number_being_created_order(
                 message.from_user.id)), get_number_being_created_order(message.from_user.id))
             complete_create_order(
                 get_number_being_created_order(message.from_user.id))
+        elif data['method'] == 'НАЛИЧНЫЕ':
+            await message.answer(f'Вы завершили создание заказа №{get_number_being_created_order(message.from_user.id)}: <strong>{get_all_products(get_number_being_created_order(message.from_user.id))}\nОплата Наличнми\nЦена: {get_order_price(get_number_being_created_order(message.from_user.id))} Р.</strong> ', parse_mode='html', reply_markup=kb_worker_main_menu)
+            load_payment_method(
+                False, get_number_being_created_order(message.from_user.id))
+            load_order_price(get_order_price(get_number_being_created_order(
+                message.from_user.id)), get_number_being_created_order(message.from_user.id))
+            complete_create_order(
+                get_number_being_created_order(message.from_user.id))
+        await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №191 - {e}')
+        print(f'worker_handlers Строка №222 - {e}')
 
 
 # Команда просмотра текущих заказов
@@ -200,7 +230,7 @@ async def check_actuals_orders(message: types.Message):
             for i in range(get_count_all_orders()):
                 # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
                 if check_running_orders(i+1) == True:
-                    await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)} Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
+                    await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)}\n{get_payment_method_with_text(i+1)}\n Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
         print(f'worker_handlers Строка №205 - {e}')
@@ -214,7 +244,7 @@ async def check_complete_orders(message: types.Message):
             for i in range(get_count_all_orders()):
                 # Зачем i+1? чтобы верхняя строка не попадала, иначе выведет None
                 if check_completed_orders(i+1) == True:
-                    await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)} Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html')
+                    await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)}\n{get_payment_method_with_text(i+1)}\nЦена: {get_order_price(i+1)} Р.</strong>', parse_mode='html')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
         print(f'worker_handlers Строка №219 - {e}')
@@ -224,13 +254,15 @@ async def check_complete_orders(message: types.Message):
 # * @dp.callback_query_handler()
 async def inline_keyboards_commands(callback: types.CallbackQuery):
     try:
+        # Команда завершения заказа
         if callback.data.split()[0] == '++':
             await callback.answer(f'🟩 Заказ №{callback.data.split()[1]} Завершен!')
             await callback.message.delete()
             reduce_products_count(callback.data.split()[1])
             append_money_to_cash(get_order_price(
-                callback.data.split()[1]), False)
+                callback.data.split()[1]), get_payment_method(callback.data.split()[1]))
             complete_order(callback.data.split()[1])
+        # Команда удаления заказа
         elif callback.data.split()[0] == '--':
             await callback.answer(f'🟥 Заказ №{callback.data.split()[1]} Удален!')
             await callback.message.delete()
@@ -275,6 +307,8 @@ def register_worker_handlers(dp: Dispatcher):
                                     'Отменить_создание_заказа'])
         dp.register_message_handler(complete_creating_order, commands=[
                                     'Завершить_создание_заказа'])
+        dp.register_message_handler(
+            select_payment_method, state=FSMPaymentMethod.method)
         dp.register_message_handler(
             check_actuals_orders, commands=['Текущие_заказы'])
         dp.register_message_handler(

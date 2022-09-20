@@ -41,6 +41,7 @@ def get_order_price(num_order):
                                 elif i.find('=') >= 0:
                                     b = PRODUCTS_SHEET[f'B{3}'].value
                                     order_price += float(b)
+        print(order_price)
         return float(order_price)
     except Exception as e:
         print(f'price Строка №46 - {e}')
@@ -56,6 +57,49 @@ def load_order_price(price, num_order):
         save_data()
     except Exception as e:
         print(f'price Строка №58 - {e}')
+
+
+# Получаем способ оплаты
+def get_payment_method(num_order):
+    try:
+        max_rw_orders = ORDERS_SHEET.max_row
+        for i in range(max_rw_orders):
+            if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order):
+                if str(ORDERS_SHEET[f'E{i+1}'].value) == 'КАРТА':
+                    return True
+                elif str(ORDERS_SHEET[f'E{i+1}'].value) == 'НАЛИЧНЫЕ':
+                    return False
+    except Exception as e:
+        print(f'price Строка №72 - {e}')
+
+
+# Получаем способ оплаты в виде текста
+def get_payment_method_with_text(num_order):
+    try:
+        max_rw_orders = ORDERS_SHEET.max_row
+        for i in range(max_rw_orders):
+            if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order):
+                if str(ORDERS_SHEET[f'E{i+1}'].value) == 'КАРТА':
+                    return 'Карта'
+                elif str(ORDERS_SHEET[f'E{i+1}'].value) == 'НАЛИЧНЫЕ':
+                    return 'Наличные'
+    except Exception as e:
+        print(f'price Строка №72 - {e}')
+
+
+# Загружаем способ оплаты в БД
+def load_payment_method(card, num_order):
+    try:
+        max_rw_orders = ORDERS_SHEET.max_row
+        for i in range(max_rw_orders):
+            if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == 'Создается':
+                if bool(card) == True:
+                    ORDERS_SHEET[f'E{i+1}'] = "КАРТА"
+                elif bool(card) == False:
+                    ORDERS_SHEET[f'E{i+1}'] = "НАЛИЧНЫЕ"
+        save_data()
+    except Exception as e:
+        print(f'price Строка №87 - {e}')
 
 
 # Тут лучше бы сделать еще одну функцию и получать цену из БД, а не расчитывать ее заново, через первую функцию

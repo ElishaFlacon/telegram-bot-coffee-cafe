@@ -18,6 +18,11 @@ k_complete_create_order = KeyboardButton('/Завершить_создание_�
 k_cancel_create_order = KeyboardButton('/Отменить_создание_заказа')
 
 
+# Кнопки выбора способа оплаты
+k_worker_payment_method_card = KeyboardButton('КАРТА')
+k_worker_payment_method_paper = KeyboardButton('НАЛИЧНЫЕ')
+
+
 # Кнопки выбора продукта
 k_product_icecream = KeyboardButton('Мороженое')
 k_product_tea = KeyboardButton('Чай')
@@ -132,6 +137,8 @@ kb_worker_select_taste_lemonade = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_worker_select_taste_smoothie = ReplyKeyboardMarkup(resize_keyboard=True)
 # Выбор вкуса молочного коктеля
 kb_worker_select_taste_milkshake = ReplyKeyboardMarkup(resize_keyboard=True)
+# Способа оплаты
+kb_worker_payment_method = ReplyKeyboardMarkup(resize_keyboard=True)
 
 
 #! Отображаем клавиатуры
@@ -169,3 +176,6 @@ kb_worker_select_taste_smoothie.row(k_taste_smoothie_garnet_kiss, k_taste_smooth
 # Выбор вкуса молочного коктеля
 kb_worker_select_taste_milkshake.row(k_taste_milk_banana, k_taste_milk_chocolate).row(
     k_taste_milk_strawberry, k_taste_milk_vanilla).row(k_taste_milk_nutella, k_taste_milk_neskvik).row(k_cancel_append_product)
+# Выбора способа оплаты
+kb_worker_payment_method.row(k_worker_payment_method_card).row(
+    k_worker_payment_method_paper)
