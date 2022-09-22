@@ -19,8 +19,8 @@ k_cancel_create_order = KeyboardButton('/Отменить_создание_за�
 
 
 # Кнопки выбора способа оплаты
-k_worker_payment_method_card = KeyboardButton('КАРТА')
-k_worker_payment_method_paper = KeyboardButton('НАЛИЧНЫЕ')
+k_payment_method_card = KeyboardButton('КАРТА')
+k_payment_method_paper = KeyboardButton('НАЛИЧНЫЕ')
 
 
 # Кнопки выбора продукта
@@ -177,5 +177,5 @@ kb_worker_select_taste_smoothie.row(k_taste_smoothie_garnet_kiss, k_taste_smooth
 kb_worker_select_taste_milkshake.row(k_taste_milk_banana, k_taste_milk_chocolate).row(
     k_taste_milk_strawberry, k_taste_milk_vanilla).row(k_taste_milk_nutella, k_taste_milk_neskvik).row(k_cancel_append_product)
 # Выбора способа оплаты
-kb_worker_payment_method.row(k_worker_payment_method_card).row(
-    k_worker_payment_method_paper)
+kb_worker_payment_method.row(k_payment_method_card).row(
+    k_payment_method_paper)

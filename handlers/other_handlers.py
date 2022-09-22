@@ -9,9 +9,9 @@ from create import dp
 async def start_working(message: types.Message):
     try:
         if admin_vefify(message.from_user.id) == True:
-            await message.answer(f'Здравствуйте, Администратор, {message.from_user.full_name}!', reply_markup=None)
+            await message.answer(f'Здравствуйте, Администратор, {message.from_user.full_name}!', reply_markup=kb_admin_main_menu)
         elif worker_vefify(message.from_user.id) == True:
-            await message.answer(f'Здравствуйте, {message.from_user.full_name}, вы хотите начать смену?', reply_markup=kb_worker_start_session)
+            await message.answer(f'Здравствуйте, {get_worker_name(message.from_user.id)}, вы хотите начать смену?', reply_markup=kb_worker_start_session)
         else:
             await message.answer(f'Здравствуйте, вы не зарегистрированный пользователь, обратитесь к Администратору и предоставте ваш ID: <strong>{message.from_user.id}</strong>', parse_mode='html')
     except Exception as e:
