@@ -27,6 +27,24 @@ class FSMProducts(StatesGroup):
     worker_id = State()
 
 
+# Команда открытия меню сотрудники
+# * @dp.message_handler(commands=['Сотрудники'])
+async def adm_open_workers_menu(message: types.Message):
+    pass
+
+
+# Команда открытия меню продукты
+# * @dp.message_handler(commands=['Продукты'])
+async def adm_open_products_menu(message: types.Message):
+    pass
+
+
+# Команда открытия меню касса
+# * @dp.message_handler(commands=['Касса'])
+async def adm_open_cash_menu(message: types.Message):
+    pass
+
+
 #! Регистрация всех хендлеров
 def register_admin_handlers(dp: Dispatcher):
     try:
