@@ -8,7 +8,7 @@ from create import dp
 # * @dp.message_handler(commands=['start', 'старт'])
 async def start_working(message: types.Message):
     try:
-        if admin_vefify(message.from_user.id) == True:
+        if admin_verify(message.from_user.id) == True:
             await message.answer(f'Здравствуйте, Администратор, {message.from_user.full_name}!', reply_markup=kb_admin_main_menu)
         elif worker_vefify(message.from_user.id) == True:
             await message.answer(f'Здравствуйте, {get_worker_name(message.from_user.id)}, вы хотите начать смену?', reply_markup=kb_worker_start_session)

@@ -31,7 +31,7 @@ class FSMProducts(StatesGroup):
 # * @dp.message_handler(commands=['Сотрудники'])
 async def open_workers_menu(message: types.Message):
     try:
-        if admin_vefify(message.from_user.id) == True:
+        if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Сотрудники,\nВыберете необходимую команду', reply_markup=kb_admin_workers_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
@@ -42,7 +42,7 @@ async def open_workers_menu(message: types.Message):
 # * @dp.message_handler(commands=['Продукты'])
 async def open_products_menu(message: types.Message):
     try:
-        if admin_vefify(message.from_user.id) == True:
+        if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Продукты,\nВыберете необходимую команду', reply_markup=kb_admin_products_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
@@ -53,7 +53,7 @@ async def open_products_menu(message: types.Message):
 # * @dp.message_handler(commands=['Касса'])
 async def open_cash_menu(message: types.Message):
     try:
-        if admin_vefify(message.from_user.id) == True:
+        if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Касса,\nВыберете необходимую команду', reply_markup=kb_admin_cash_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
@@ -64,7 +64,7 @@ async def open_cash_menu(message: types.Message):
 # * @dp.message_handler(Text(equals='НАЗАД', ignore_case=True), state='*')
 async def back_main_menu(message: types.Message):
     try:
-        if admin_vefify(message.from_user.id) == True:
+        if admin_verify(message.from_user.id) == True:
             await message.answer(f'Команда Назад,\nВы вернулись в основное меню', reply_markup=kb_admin_main_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
@@ -75,11 +75,12 @@ async def back_main_menu(message: types.Message):
 # * @dp.message_handler(Text(equals='ОТМЕНА', ignore_case=True), state='*')
 async def fsm_exit(message: types.Message, state: FSMContext):
     try:
-        current_state = await state.get_state()
-        if current_state is None:
-            return
-        await state.finish()
-        await message.answer('ОТМЕНА!', reply_markup=kb_admin_main_menu)
+        if admin_verify(message.from_user.id) == True:
+            current_state = await state.get_state()
+            if current_state is None:
+                return
+            await state.finish()
+            await message.answer('ОТМЕНА!', reply_markup=kb_admin_main_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
         print(f'worker_handlers Строка №85 - {e}')
