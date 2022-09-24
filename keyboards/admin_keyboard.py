@@ -8,7 +8,7 @@ k_admin_cash = KeyboardButton('/Касса')
 
 
 # Дополнительные необходимые кнопки
-k_admin_back = KeyboardButton('Назад')
+k_admin_back = KeyboardButton('НАЗАД')
 k_admin_cancel = KeyboardButton('Отмена')
 
 

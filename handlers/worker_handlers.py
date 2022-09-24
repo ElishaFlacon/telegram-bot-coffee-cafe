@@ -63,9 +63,9 @@ async def add_product_to_order(message: types.Message):
         print(f'worker_handlers Строка №58 - {e}')
 
 
-# Выход из машины состояния, команда отмены (выше всех команд добавления продуктов)
+# Команда выхода из машины состояния (выше всех команд добавления продуктов)
 # * @dp.message_handler(Text(equals='ОТМЕНА', ignore_case=True), state='*')
-async def cancel_selected(message: types.Message, state: FSMContext):
+async def fsm_products_exit(message: types.Message, state: FSMContext):
     try:
         current_state = await state.get_state()
         if current_state is None:
@@ -296,7 +296,7 @@ def register_worker_handlers(dp: Dispatcher):
         dp.register_message_handler(create_order, commands=['Создать_заказ'])
         dp.register_message_handler(
             add_product_to_order, commands=['Добавить_продукт'])
-        dp.register_message_handler(cancel_selected, Text(
+        dp.register_message_handler(fsm_products_exit, Text(
             equals='ОТМЕНА', ignore_case=True), state='*')
         dp.register_message_handler(select_product, state=FSMProducts.product)
         dp.register_message_handler(select_taste, state=FSMProducts.taste)
