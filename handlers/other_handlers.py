@@ -1,7 +1,6 @@
 from aiogram import types, Dispatcher
 from keyboards import *
 from verification import *
-from create import dp
 
 
 # Команда старта

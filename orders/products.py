@@ -92,7 +92,7 @@ def increasing_products_count(num_order, count):
                         # Тут проверка на продукт и вкус
                         if j.lower().find(str(PRODUCTS_SHEET[f'A{l+1}'].value)) == 0:
                             PRODUCTS_SHEET[f'C{l+1}'] = str(
-                                int(PRODUCTS_SHEET[f'C{l+1}'].value) - int(count))
+                                int(PRODUCTS_SHEET[f'C{l+1}'].value) + int(count))
         save_data()
     except Exception as e:
         print(f'products Строка №98 - {e}')

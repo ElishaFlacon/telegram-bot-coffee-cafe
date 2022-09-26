@@ -9,7 +9,7 @@ k_admin_cash = KeyboardButton('/Касса')
 
 # Дополнительные необходимые кнопки
 k_admin_back = KeyboardButton('НАЗАД')
-k_admin_cancel = KeyboardButton('Отмена')
+k_admin_cancel = KeyboardButton('ОТМЕНА')
 
 
 # Кнопки меню сотрудников
@@ -44,9 +44,10 @@ kb_admin_cash_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main_menu.row(k_admin_workers).row(k_admin_products).row(k_admin_cash)
 # Отображение клавиатуры меню сотрудников
 kb_admin_workers_menu.row(k_admin_check_worker_sessions).row(
-    k_admin_check_sessions_status).row(k_admin_append_new_worker).row(k_admin_delete_worker)
+    k_admin_check_sessions_status).row(k_admin_append_new_worker).row(k_admin_delete_worker).row(k_admin_back)
 # Отображение клавиатуры меню продуктов
-kb_admin_products_menu.row(k_admin_append_products).row(k_admin_append_dishes)
+kb_admin_products_menu.row(k_admin_append_products).row(
+    k_admin_append_dishes).row(k_admin_back)
 # Отображение клавиатуры меню кассы
 kb_admin_cash_menu.row(k_admin_check_cash).row(
-    k_admin_increment_cash).row(k_admin_decrement_cash)
+    k_admin_increment_cash).row(k_admin_decrement_cash).row(k_admin_back)

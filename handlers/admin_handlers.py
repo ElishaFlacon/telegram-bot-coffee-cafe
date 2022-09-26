@@ -2,9 +2,9 @@ from aiogram import types, Dispatcher
 from aiogram.dispatcher.filters import Text
 from keyboards.admin_keyboard import *
 from verification.admin_verify import *
+from session.worker_session import *
 from cash import *
 from orders import *
-from create import dp
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
@@ -60,7 +60,7 @@ async def open_cash_menu(message: types.Message):
         print(f'admin_handlers Строка №60 - {e}')
 
 
-# Команда для возвращения в основное меню (клавиатуру)
+# Команда для возвращения в основное меню
 # * @dp.message_handler(Text(equals='НАЗАД', ignore_case=True), state='*')
 async def back_main_menu(message: types.Message):
     try:
@@ -86,15 +86,59 @@ async def fsm_exit(message: types.Message, state: FSMContext):
         print(f'worker_handlers Строка №85 - {e}')
 
 
+# Команда просмотра смен сотрудников
+# * @dp.message_handler(commands=['Смены_сотрудников'])
+async def open_workers_menu(message: types.Message):
+    try:
+        if admin_verify(message.from_user.id) == True:
+            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №38 - {e}')
+
+
+# Команда просмотра кто из сотрудников находится на смене в данный момент
+# * @dp.message_handler(commands=['Кто_на_смене'])
+async def open_workers_menu(message: types.Message):
+    try:
+        if admin_verify(message.from_user.id) == True:
+            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №38 - {e}')
+
+
+# Команда добавления сотрудника
+# * @dp.message_handler(commands=['Добавить_сотрудника'])
+async def open_workers_menu(message: types.Message):
+    try:
+        if admin_verify(message.from_user.id) == True:
+            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №38 - {e}')
+
+
+# Команда удаления сотрудника
+# * @dp.message_handler(commands=['Удалить_сотрудника'])
+async def open_workers_menu(message: types.Message):
+    try:
+        if admin_verify(message.from_user.id) == True:
+            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №38 - {e}')
+
+
 #! Регистрация всех хендлеров
 def register_admin_handlers(dp: Dispatcher):
     try:
-        dp.message_handler(open_workers_menu, commands=['Сотрудники']),
-        dp.message_handler(open_products_menu, commands=['Продукты']),
-        dp.message_handler(open_cash_menu, commands=['Касса']),
-        dp.message_handler(back_main_menu, Text(
-            equals='НАЗАД', ignore_case=True), state='*'),
-        dp.message_handler(fsm_exit, Text(
-            equals='ОТМЕНА', ignore_case=True), state='*'),
+        dp.register_message_handler(open_workers_menu, commands=['Сотрудники'])
+        dp.register_message_handler(open_products_menu, commands=['Продукты'])
+        dp.register_message_handler(open_cash_menu, commands=['Касса'])
+        dp.register_message_handler(back_main_menu, Text(
+            equals='НАЗАД', ignore_case=True), state='*')
+        dp.register_message_handler(fsm_exit, Text(
+            equals='ОТМЕНА', ignore_case=True), state='*')
     except Exception as e:
         print(f'admin_handlers ОШИБКА РЕГИСТРАЦИИ ХЕНДЛЕРОВ - {e}')
