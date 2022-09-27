@@ -84,6 +84,6 @@ def check_active_sessions():
     rtn_str = ''
     max_rw_workers = WORKERS_SHEET.max_row
     for i in range(max_rw_workers):
-        if str(WORKERS_SHEET[f'C{i+1}'].value) == 'Да':
+        if str(WORKERS_SHEET[f'D{i+1}'].value) == 'Да':
             rtn_str += f'{WORKERS_SHEET[f"B{i+1}"].value}\n'
     return rtn_str

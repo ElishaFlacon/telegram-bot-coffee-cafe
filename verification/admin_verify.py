@@ -18,16 +18,20 @@ def admin_verify(admin_id):
 # Но а сейчас я 'устану' это делать
 # Я не думал что бот выйдет на 1000+ строк
 # Так, прикинул, ну там на 400 - 600...
-def change_workers(worker_name, worker_id, option):
+def change_workers_sheet(worker_name, worker_id, option):
     max_rw_workers = WORKERS_SHEET.max_row
     for i in range(max_rw_workers + 1):
-        if WORKERS_SHEET[f'B{i+1}'].value == None:
-            if option == True:
-                WORKERS_SHEET[f'B{i+1}'] = str(worker_name)
-                WORKERS_SHEET[f'C{i+1}'] = str(worker_id)
-                WORKERS_SHEET[f'D{i+1}'] = 'Нет'
-            elif option == False:
-                WORKERS_SHEET[f'B{i+1}'] = ''
-                WORKERS_SHEET[f'C{i+1}'] = ''
-                WORKERS_SHEET[f'D{i+1}'] = ''
+        if WORKERS_SHEET[f'B{i+1}'].value == None and option == 'Добавить':
+            WORKERS_SHEET[f'B{i+1}'] = str(worker_name)
+            WORKERS_SHEET[f'C{i+1}'] = str(worker_id)
+            WORKERS_SHEET[f'D{i+1}'] = 'Нет'
+            break
+        elif str(WORKERS_SHEET[f'C{i+1}'].value) == str(worker_id) and option == 'Удалить':
+            WORKERS_SHEET[f'B{i+1}'] = ''
+            WORKERS_SHEET[f'C{i+1}'] = ''
+            WORKERS_SHEET[f'D{i+1}'] = ''
+            break
     save_data()
+
+
+# !ДОДЕЛАТЬ ФУНКЦИЮ С СОТРУДНИКАМИ

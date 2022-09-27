@@ -14,9 +14,8 @@ k_admin_cancel = KeyboardButton('ОТМЕНА')
 
 # Кнопки меню сотрудников
 k_admin_check_worker_sessions = KeyboardButton('/Смены_сотрудников')
-k_admin_check_sessions_status = KeyboardButton('/Кто_на_смене')
-k_admin_append_new_worker = KeyboardButton('/Добавить_сотрудника')
-k_admin_delete_worker = KeyboardButton('/Удалить_сотрудника')
+k_admin_check_sessions_status = KeyboardButton('/Активные_смены')
+k_admin_change_worker = KeyboardButton('/Изменить_список_сотрудников')
 
 
 # Кнопки меню продуктов
@@ -44,7 +43,7 @@ kb_admin_cash_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_main_menu.row(k_admin_workers).row(k_admin_products).row(k_admin_cash)
 # Отображение клавиатуры меню сотрудников
 kb_admin_workers_menu.row(k_admin_check_worker_sessions).row(
-    k_admin_check_sessions_status).row(k_admin_append_new_worker).row(k_admin_delete_worker).row(k_admin_back)
+    k_admin_check_sessions_status).row(k_admin_change_worker).row(k_admin_back)
 # Отображение клавиатуры меню продуктов
 kb_admin_products_menu.row(k_admin_append_products).row(
     k_admin_append_dishes).row(k_admin_back)

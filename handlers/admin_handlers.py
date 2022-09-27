@@ -10,21 +10,17 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
 # Машина состояний для просмотра смены сотрудника
-class FSMProducts(StatesGroup):
+class FSMSessions(StatesGroup):
     name = State()
     first_date = State()
     second_date = State()
 
 
-# Машина состояний для добавления сотрудника
-class FSMProducts(StatesGroup):
+# Машина состояний для изменения сотрудника
+class FSMWorkers(StatesGroup):
+    option = State()
     worker_id = State()
-    name = State()
-
-
-# Машина состояний для удаления сотрудника
-class FSMProducts(StatesGroup):
-    worker_id = State()
+    worker_name = State()
 
 
 # Команда открытия меню сотрудники
@@ -88,7 +84,7 @@ async def fsm_exit(message: types.Message, state: FSMContext):
 
 # Команда просмотра смен сотрудников
 # * @dp.message_handler(commands=['Смены_сотрудников'])
-async def open_workers_menu(message: types.Message):
+async def worker_sessions(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
             await message.answer(f'', reply_markup=kb_admin_workers_menu)
@@ -98,36 +94,80 @@ async def open_workers_menu(message: types.Message):
 
 
 # Команда просмотра кто из сотрудников находится на смене в данный момент
-# * @dp.message_handler(commands=['Кто_на_смене'])
-async def open_workers_menu(message: types.Message):
+# * @dp.message_handler(commands=['Активные_смены'])
+async def active_sessions(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
-            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+            cas = check_active_sessions()
+            if cas == '':
+                await message.answer(f'Активных смен нет!')
+            elif cas != '':
+                await message.answer(f'Активные смены сотрудников:\n{cas}')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
-        print(f'admin_handlers Строка №38 - {e}')
+        print(f'admin_handlers Строка №108 - {e}')
 
 
 # Команда добавления сотрудника
-# * @dp.message_handler(commands=['Добавить_сотрудника'])
-async def open_workers_menu(message: types.Message):
+# * @dp.message_handler(commands=['Изменить_список_сотрудников'])
+async def change_workers(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
-            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+            await FSMWorkers.option.set()
+            await message.answer(f'Выберете действие:', reply_markup=kb_admin_workers_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
-        print(f'admin_handlers Строка №38 - {e}')
+        print(f'admin_handlers Строка №123 - {e}')
 
 
-# Команда удаления сотрудника
-# * @dp.message_handler(commands=['Удалить_сотрудника'])
-async def open_workers_menu(message: types.Message):
+# Команда выбора опции (удалить, добавить)
+# * @dp.message_handler(state=FSMWorkers.option)
+async def select_option(message: types.Message, state: FSMContext):
     try:
-        if admin_verify(message.from_user.id) == True:
-            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+        async with state.proxy() as data:
+            data['option'] = message.text
+        await FSMWorkers.next()
+        if data['option'] == 'Добавить':
+            await message.answer(f'Запишите айди')
+        elif data['option'] == 'Удалить':
+            await message.answer(f'Запишите айди')
+        else:
+            await message.answer(f'Такой команды нет!', reply_markup=kb_admin_workers_menu)
+            await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
-        print(f'admin_handlers Строка №38 - {e}')
+        print(f'admin_handlers Строка №108 - {e}')
+
+
+# Команда для записи айди работника
+# * @dp.message_handler(state=FSMWorkers.worker_id)
+async def select_worker_id(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['worker_id'] = message.text
+        await FSMWorkers.next()
+        await message.answer(f'Запишите имя')
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №108 - {e}')
+
+
+# Команда для записи имени работника
+# * @dp.message_handler(state=FSMWorkers.worker_name)
+async def select_worker_name(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['worker_name'] = message.text
+        change_workers_sheet(data['worker_name'],
+                             data['worker_id'], data['option'])
+        await state.finish()
+        if data['option'] == 'Добавить':
+            await message.answer(f'Сотрудник добавлен')
+        elif data['option'] == 'Удалить':
+            await message.answer(f'Сотрудник удален')
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        print(f'admin_handlers Строка №108 - {e}')
 
 
 #! Регистрация всех хендлеров
@@ -140,5 +180,14 @@ def register_admin_handlers(dp: Dispatcher):
             equals='НАЗАД', ignore_case=True), state='*')
         dp.register_message_handler(fsm_exit, Text(
             equals='ОТМЕНА', ignore_case=True), state='*')
+        dp.register_message_handler(
+            active_sessions, commands=['Активные_смены'])
+        dp.register_message_handler(change_workers, commands=[
+                                    'Изменить_список_сотрудников'])
+        dp.register_message_handler(select_option, state=FSMWorkers.option)
+        dp.register_message_handler(
+            select_worker_id, state=FSMWorkers.worker_id)
+        dp.register_message_handler(
+            select_worker_name, state=FSMWorkers.worker_name)
     except Exception as e:
         print(f'admin_handlers ОШИБКА РЕГИСТРАЦИИ ХЕНДЛЕРОВ - {e}')
