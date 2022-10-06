@@ -30,7 +30,7 @@ async def open_workers_menu(message: types.Message):
         if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Сотрудники,\nВыберете необходимую команду', reply_markup=kb_admin_workers_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №38 - {e}')
 
 
@@ -41,7 +41,7 @@ async def open_products_menu(message: types.Message):
         if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Продукты,\nВыберете необходимую команду', reply_markup=kb_admin_products_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №49 - {e}')
 
 
@@ -52,7 +52,7 @@ async def open_cash_menu(message: types.Message):
         if admin_verify(message.from_user.id) == True:
             await message.answer(f'Вы вошли в меню Касса,\nВыберете необходимую команду', reply_markup=kb_admin_cash_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №60 - {e}')
 
 
@@ -61,9 +61,9 @@ async def open_cash_menu(message: types.Message):
 async def back_main_menu(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
-            await message.answer(f'Команда Назад,\nВы вернулись в основное меню', reply_markup=kb_admin_main_menu)
+            await message.answer(f'Команда НАЗАД!,\nВы вернулись в основное меню', reply_markup=kb_admin_main_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №71 - {e}')
 
 
@@ -73,12 +73,10 @@ async def fsm_exit(message: types.Message, state: FSMContext):
     try:
         if admin_verify(message.from_user.id) == True:
             current_state = await state.get_state()
-            if current_state is None:
-                return
             await state.finish()
-            await message.answer('ОТМЕНА!', reply_markup=kb_admin_main_menu)
+            await message.answer('Команда ОТМЕНА!\nВы вернулись в основное меню', reply_markup=kb_admin_main_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'worker_handlers Строка №85 - {e}')
 
 
@@ -87,9 +85,9 @@ async def fsm_exit(message: types.Message, state: FSMContext):
 async def worker_sessions(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
-            await message.answer(f'', reply_markup=kb_admin_workers_menu)
+            await message.answer(f'абс', reply_markup=kb_admin_worker_sessions_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №38 - {e}')
 
 
@@ -100,11 +98,11 @@ async def active_sessions(message: types.Message):
         if admin_verify(message.from_user.id) == True:
             cas = check_active_sessions()
             if cas == '':
-                await message.answer(f'Активных смен нет!')
+                await message.answer(f'Активных смен нет!', reply_markup=kb_admin_workers_menu)
             elif cas != '':
-                await message.answer(f'Активные смены сотрудников:\n{cas}')
+                await message.answer(f'Активные смены сотрудников:\n{cas}', reply_markup=kb_admin_workers_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
 
 
@@ -114,9 +112,9 @@ async def change_workers(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
             await FSMWorkers.option.set()
-            await message.answer(f'Выберете действие:', reply_markup=kb_admin_workers_menu)
+            await message.answer(f'Выберете действие:', reply_markup=kb_admin_worker_change_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №123 - {e}')
 
 
@@ -128,14 +126,14 @@ async def select_option(message: types.Message, state: FSMContext):
             data['option'] = message.text
         await FSMWorkers.next()
         if data['option'] == 'Добавить':
-            await message.answer(f'Запишите айди')
+            await message.answer(f'Запишите айди', reply_markup=kb_admin_cancel)
         elif data['option'] == 'Удалить':
-            await message.answer(f'Запишите айди')
+            await message.answer(f'Запишите айди', reply_markup=kb_admin_cancel)
         else:
-            await message.answer(f'Такой команды нет!', reply_markup=kb_admin_workers_menu)
+            await message.answer(f'Такой команды нет!', reply_markup=kb_admin_cancel)
             await state.finish()
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
 
 
@@ -146,9 +144,9 @@ async def select_worker_id(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['worker_id'] = message.text
         await FSMWorkers.next()
-        await message.answer(f'Запишите имя')
+        await message.answer(f'Запишите имя', reply_markup=kb_admin_cancel)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
 
 
@@ -162,11 +160,11 @@ async def select_worker_name(message: types.Message, state: FSMContext):
                              data['worker_id'], data['option'])
         await state.finish()
         if data['option'] == 'Добавить':
-            await message.answer(f'Сотрудник добавлен')
+            await message.answer(f'Сотрудник добавлен', reply_markup=kb_admin_main_menu)
         elif data['option'] == 'Удалить':
-            await message.answer(f'Сотрудник удален')
+            await message.answer(f'Сотрудник удален', reply_markup=kb_admin_main_menu)
     except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!')
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
 
 
@@ -180,6 +178,8 @@ def register_admin_handlers(dp: Dispatcher):
             equals='НАЗАД', ignore_case=True), state='*')
         dp.register_message_handler(fsm_exit, Text(
             equals='ОТМЕНА', ignore_case=True), state='*')
+        dp.register_message_handler(
+            worker_sessions, commands=['Смены_сотрудников'])
         dp.register_message_handler(
             active_sessions, commands=['Активные_смены'])
         dp.register_message_handler(change_workers, commands=[

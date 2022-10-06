@@ -44,12 +44,14 @@ kb_admin_main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_workers_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 # Инициализация клавиатуры меню смен сотрудников
 kb_admin_worker_sessions_menu = ReplyKeyboardMarkup(resize_keyboard=True)
-# Инициализация клавиатуры меню активных смен
-kb_admin_active_session_menu = ReplyKeyboardMarkup(resize_keyboard=True)
+# Инициализация клавиатуры меню изменения сотрудников
+kb_admin_worker_change_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 # Инициализация клавиатуры меню продуктов
 kb_admin_products_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 # Инициализация клавиатуры меню кассы
 kb_admin_cash_menu = ReplyKeyboardMarkup(resize_keyboard=True)
+# Отображение клавиатуры ОТМЕНА!
+kb_admin_cancel = ReplyKeyboardMarkup(resize_keyboard=True)
 
 
 # Отображение клавиатуры основного меню
@@ -58,13 +60,15 @@ kb_admin_main_menu.row(k_admin_workers).row(k_admin_products).row(k_admin_cash)
 kb_admin_workers_menu.row(
     k_admin_check_sessions_status).row(k_admin_check_worker_sessions).row(k_admin_change_worker).row(k_admin_back)
 # Отображение клавиатуры меню смен сотрудников
-kb_admin_worker_sessions_menu.row(k_admin_today_date)
-# Отображение клавиатуры меню активных смен
-kb_admin_active_session_menu.row(
-    k_admin_append_worker).row(k_admin_remove_worker)
+kb_admin_worker_sessions_menu.row(k_admin_today_date).row(k_admin_cancel)
+# Отображение клавиатуры меню изменения сотрудников
+kb_admin_worker_change_menu.row(
+    k_admin_append_worker).row(k_admin_remove_worker).row(k_admin_cancel)
 # Отображение клавиатуры меню продуктов
 kb_admin_products_menu.row(k_admin_append_products).row(
     k_admin_append_dishes).row(k_admin_back)
 # Отображение клавиатуры меню кассы
 kb_admin_cash_menu.row(k_admin_check_cash).row(
     k_admin_increment_cash).row(k_admin_decrement_cash).row(k_admin_back)
+# Отображение клавиатуры ОТМЕНА!
+kb_admin_cancel.row(k_admin_cancel)
