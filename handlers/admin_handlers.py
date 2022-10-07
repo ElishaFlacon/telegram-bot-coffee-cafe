@@ -9,11 +9,14 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
+#! =============================================================================================== !#
+
+
 # Машина состояний для просмотра смены сотрудника
 class FSMSessions(StatesGroup):
     name = State()
-    first_date = State()
-    second_date = State()
+    date = State()
+    days = State()
 
 
 # Машина состояний для изменения сотрудника
@@ -21,6 +24,9 @@ class FSMWorkers(StatesGroup):
     option = State()
     worker_id = State()
     worker_name = State()
+
+
+#! =============================================================================================== !#
 
 
 # Команда открытия меню сотрудники
@@ -56,6 +62,9 @@ async def open_cash_menu(message: types.Message):
         print(f'admin_handlers Строка №60 - {e}')
 
 
+#! =============================================================================================== !#
+
+
 # Команда для возвращения в основное меню
 # * @dp.message_handler(Text(equals='НАЗАД', ignore_case=True), state='*')
 async def back_main_menu(message: types.Message):
@@ -80,15 +89,65 @@ async def fsm_exit(message: types.Message, state: FSMContext):
         print(f'worker_handlers Строка №85 - {e}')
 
 
+#! =============================================================================================== !#
+
+
 # Команда просмотра смен сотрудников
 # * @dp.message_handler(commands=['Смены_сотрудников'])
 async def worker_sessions(message: types.Message):
     try:
         if admin_verify(message.from_user.id) == True:
-            await message.answer(f'абс', reply_markup=kb_admin_worker_sessions_menu)
+            await FSMSessions.name.set()
+            await message.answer(f'Введите имя сотрудника:', reply_markup=kb_admin_cancel)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №38 - {e}')
+
+
+# Команда записи имени
+# * @dp.message_handler(state=FSMSessions.name)
+async def select_worker(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['name'] = message.text
+        await FSMSessions.next()
+        await message.answer(f'Запишите с какой даты нужно начать поиск\nПример: 01.01.2000', reply_markup=kb_admin_cancel)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
+        print(f'admin_handlers Строка №108 - {e}')
+
+
+# Команда для записи с какой даты мы находим смену
+# * @dp.message_handler(state=FSMSessions.date)
+async def select_date(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['date'] = message.text
+        await FSMSessions.next()
+        await message.answer(f'Запишите количество дней\nПояснение: Если вам нужно найти смены сотрудника с 01.01.2000 до 10.01.2000, то вам нужно написать 9 дней', reply_markup=kb_admin_cancel)
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
+        print(f'admin_handlers Строка №108 - {e}')
+
+
+# Команда для записи дней от той даты (то есть если от 1.09 нам нужно 7 дней, то будем искать с 1.09 до 8.09)
+# * @dp.message_handler(state=FSMSessions.days)
+async def select_quantity_days(message: types.Message, state: FSMContext):
+    try:
+        async with state.proxy() as data:
+            data['days'] = message.text
+        await FSMSessions.next()
+        await message.answer(f'Ожидайте...', reply_markup=kb_admin_workers_menu)
+        # !
+        # ! И вот сюда пихаем поиск по сменам
+        # !
+        await state.finish()
+    except Exception as e:
+        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
+        print(f'admin_handlers Строка №108 - {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда просмотра кто из сотрудников находится на смене в данный момент
@@ -104,6 +163,9 @@ async def active_sessions(message: types.Message):
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда добавления сотрудника
@@ -168,6 +230,9 @@ async def select_worker_name(message: types.Message, state: FSMContext):
         print(f'admin_handlers Строка №108 - {e}')
 
 
+#! =============================================================================================== !#
+
+
 #! Регистрация всех хендлеров
 def register_admin_handlers(dp: Dispatcher):
     try:
@@ -180,6 +245,10 @@ def register_admin_handlers(dp: Dispatcher):
             equals='ОТМЕНА', ignore_case=True), state='*')
         dp.register_message_handler(
             worker_sessions, commands=['Смены_сотрудников'])
+        dp.register_message_handler(select_worker, state=FSMSessions.name)
+        dp.register_message_handler(select_date, state=FSMSessions.date)
+        dp.register_message_handler(
+            select_quantity_days, state=FSMSessions.days)
         dp.register_message_handler(
             active_sessions, commands=['Активные_смены'])
         dp.register_message_handler(change_workers, commands=[
