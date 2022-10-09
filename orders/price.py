@@ -41,7 +41,6 @@ def get_order_price(num_order):
                                 elif i.find('=') >= 0:
                                     b = PRODUCTS_SHEET[f'B{3}'].value
                                     order_price += float(b)
-        print(order_price)
         return float(order_price)
     except Exception as e:
         print(f'price Строка №46 - {e}')

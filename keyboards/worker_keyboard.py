@@ -30,7 +30,7 @@ k_product_lemonade = KeyboardButton('Лимонад')
 k_product_smoothie = KeyboardButton('Смузи')
 k_product_waffle = KeyboardButton('Вафля')
 k_product_milkshake = KeyboardButton('Молочный_коктель')
-k_cancel_append_product = KeyboardButton('ОТМЕНА')
+k_cancel_append_product = KeyboardButton('отмена!')
 
 
 # Кнопки выбора вкуса мороженого

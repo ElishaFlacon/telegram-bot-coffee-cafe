@@ -1,2 +1,6 @@
 # ТОКЕН БОТА
-API_TOKEN = '5445026822:AAF9A_LyeryVYmTIHde2Q3TlVpte4sBO1ms'
+API_TOKEN: str = '5445026822:AAF9A_LyeryVYmTIHde2Q3TlVpte4sBO1ms'
+# ПИН КОД
+# НУЖЕН ДЛЯ ПОДТВЕРЖДЕНИЯ ОПАСНЫХ ДЕЙСТВИЙ
+# КОТОРЫЕ МОГУТ ПРИВЕСТИ К НЕОБРАТИМЫМ ПОСЛЕДСТВИЯМ
+PIN_CODE: int = 9911

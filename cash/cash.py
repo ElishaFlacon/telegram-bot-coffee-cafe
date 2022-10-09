@@ -2,38 +2,29 @@ from data import *
 from datetime import *
 
 
-# Функция добовления денег в кассу
-def append_money_to_cash(money, card):
+# Функция изменения денег в кассе
+def change_cash_balance(money, card, option):
     try:
-        if card == True:
-            CASH_SHEET[f'B{2}'] = str(
-                float(money) + float(CASH_SHEET[f'B{2}'].value))
-        elif card == False:
-            CASH_SHEET[f'A{2}'] = str(
-                float(money) + float(CASH_SHEET[f'A{2}'].value))
+        if option == 'увеличить':
+            if card == 'карта' or card == True:
+                CASH_SHEET[f'B{2}'] = str(
+                    float(money) + float(CASH_SHEET[f'B{2}'].value))
+            elif card == 'наличные' or card == False:
+                CASH_SHEET[f'A{2}'] = str(
+                    float(money) + float(CASH_SHEET[f'A{2}'].value))
+        elif option == 'уменьшить':
+            if card == 'карта' or card == True:
+                CASH_SHEET[f'B{2}'] = str(
+                    float(CASH_SHEET[f'B{2}'].value) - float(money))
+            elif card == 'наличные' or card == False:
+                CASH_SHEET[f'A{2}'] = str(
+                    float(CASH_SHEET[f'A{2}'].value) - float(money))
         CASH_SHEET[f'C{2}'] = str(
             float(CASH_SHEET[f'A{2}'].value) + float(CASH_SHEET[f'B{2}'].value))
         CASH_SHEET[f'D{2}'] = str(datetime.now())[:-7]
         save_data()
     except Exception as e:
-        print(f'cash Строка №19 - {e}')
-
-
-# Функция удаления денег из кассы
-def delete_money_to_cash(money, card):
-    try:
-        if card:
-            CASH_SHEET[f'A{2}'] = str(
-                float(money) - float(CASH_SHEET[f'A{2}'].value))
-        elif card == False:
-            CASH_SHEET[f'B{2}'] = str(
-                float(money) - float(CASH_SHEET[f'B{2}'].value))
-        CASH_SHEET[f'C{2}'] = str(
-            float(CASH_SHEET[f'A{2}'].value) - float(CASH_SHEET[f'B{2}'].value))
-        CASH_SHEET[f'D{2}'] = str(datetime.now())[:-7]
-        save_data()
-    except Exception as e:
-        print(f'cash Строка №36 - {e}')
+        print(f'cash Строка №29 - {e}')
 
 
 # Функция очистки кассы полностью
@@ -46,3 +37,8 @@ def delete_money_to_cash():
         save_data()
     except Exception as e:
         print(f'cash Строка №48 - {e}')
+
+
+# Функция выводит количество денег в кассе
+def get_cash_value():
+    return f'Наличные : {CASH_SHEET[f"A2"].value} р.\nКартой: {CASH_SHEET[f"B2"].value} р.\nОбщие: {CASH_SHEET[f"C2"].value} р.\nВермя последнего обновления кассы: {CASH_SHEET[f"D2"].value}'

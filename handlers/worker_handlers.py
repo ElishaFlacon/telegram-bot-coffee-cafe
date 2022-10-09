@@ -64,14 +64,12 @@ async def add_product_to_order(message: types.Message):
 
 
 # Команда выхода из машины состояния (выше всех команд добавления продуктов)
-# * @dp.message_handler(Text(equals='ОТМЕНА', ignore_case=True), state='*')
+# * @dp.message_handler(Text(equals='отмена!', ignore_case=True), state='*')
 async def fsm_products_exit(message: types.Message, state: FSMContext):
     try:
-        current_state = await state.get_state()
-        if current_state is None:
-            return
-        await state.finish()
-        await message.answer('ОТМЕНА!', reply_markup=kb_worker_create_order)
+        if worker_vefify(message.from_user.id) == True:
+            await state.finish()
+            await message.answer('Команда ОТМЕНА!\nВы вернулись в основное меню', reply_markup=kb_worker_main_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
         print(f'worker_handlers Строка №34 - {e}')
@@ -137,7 +135,12 @@ async def select_taste(message: types.Message, state: FSMContext):
 # * @dp.message_handler(state=FSMProducts.additions)
 async def select_additions(message: types.Message, state: FSMContext):
     try:
+        async with state.proxy() as data:
+            data['additions'] = ''
         if message.text == 'Завершить':
+            if data['additions'] == '':
+                async with state.proxy() as data:
+                    data['additions'] = f'Без_посыпки '
             await FSMProducts.next()
             await message.answer('Выберите топинг для мороженного', reply_markup=kb_worker_select_topping_icecream)
         elif message.text == 'Без_посыпки':
@@ -148,7 +151,7 @@ async def select_additions(message: types.Message, state: FSMContext):
         else:
             async with state.proxy() as data:
                 data['additions'] += f'{message.text} '
-                await message.answer(f'Добавлена посыпка: {message.text}')
+            await message.answer(f'Добавлена посыпка: {message.text}')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
         print(f'worker_handlers Строка №148 - {e}')
@@ -259,8 +262,8 @@ async def inline_keyboards_commands(callback: types.CallbackQuery):
             await callback.answer(f'🟩 Заказ №{callback.data.split()[1]} Завершен!')
             await callback.message.delete()
             reduce_products_count(callback.data.split()[1])
-            append_money_to_cash(get_order_price(
-                callback.data.split()[1]), get_payment_method(callback.data.split()[1]))
+            change_cash_balance(get_order_price(callback.data.split()[
+                                1]), get_payment_method(callback.data.split()[1]), 'увеличить')
             complete_order(callback.data.split()[1])
         # Команда удаления заказа
         elif callback.data.split()[0] == '--':
@@ -297,7 +300,7 @@ def register_worker_handlers(dp: Dispatcher):
         dp.register_message_handler(
             add_product_to_order, commands=['Добавить_продукт'])
         dp.register_message_handler(fsm_products_exit, Text(
-            equals='ОТМЕНА', ignore_case=True), state='*')
+            equals='отмена!', ignore_case=True), state='*')
         dp.register_message_handler(select_product, state=FSMProducts.product)
         dp.register_message_handler(select_taste, state=FSMProducts.taste)
         dp.register_message_handler(

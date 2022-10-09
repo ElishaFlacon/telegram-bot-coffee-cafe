@@ -46,7 +46,7 @@ def append_start_session_on_data(worker_name):
         for i in range(max_rw):
             if SESSIONS_SHEET[f'A{i+1}'].value == None:
                 SESSIONS_SHEET[f'A{i+1}'] = str(worker_name)
-                SESSIONS_SHEET[f'B{i+1}'] = str(datetime.now().date())
+                SESSIONS_SHEET[f'B{i+1}'] = str(datetime.now())[:-7]
         save_data()
     except Exception as e:
         print(f'worker_session Строка №48 - {e}')
