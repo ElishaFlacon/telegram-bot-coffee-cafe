@@ -119,40 +119,40 @@ async def select_worker(message: types.Message, state: FSMContext):
         async with state.proxy() as data:
             data['name'] = message.text
         await FSMSessions.next()
-        await message.answer(f'Запишите с какой даты нужно начать поиск\nПример: 01.01.2000', reply_markup=kb_admin_cancel)
+        await message.answer(f'Запишите с какой даты нужно начать поиск\nПример: 20**-MM-DD', reply_markup=kb_admin_cancel)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
 
 
-# Команда для записи с какой даты мы находим смену
+# Команда для записи с даты смены
 # * @dp.message_handler(state=FSMSessions.date)
 async def select_date(message: types.Message, state: FSMContext):
     try:
         async with state.proxy() as data:
             data['date'] = message.text
-        await FSMSessions.next()
-        await message.answer(f'Запишите количество дней\nПояснение: Если вам нужно найти смены сотрудника с 01.01.2000 до 10.01.2000, то вам нужно написать 9 дней', reply_markup=kb_admin_cancel)
-    except Exception as e:
-        await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
-        print(f'admin_handlers Строка №108 - {e}')
-
-
-# Команда для записи дней от той даты (то есть если от 1.09 нам нужно 7 дней, то будем искать с 1.09 до 8.09)
-# * @dp.message_handler(state=FSMSessions.days)
-async def select_quantity_days(message: types.Message, state: FSMContext):
-    try:
-        async with state.proxy() as data:
-            data['days'] = message.text
-        await FSMSessions.next()
         await message.answer(f'Ожидайте...', reply_markup=kb_admin_workers_menu)
-        # !
-        # ! И вот сюда пихаем поиск по сменам
-        # !
+        await message.answer(f'Все найденные смены, для даты: {data["date"]}\n{check_worker_session(data["name"], data["date"])}', reply_markup=kb_admin_main_menu)
         await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
         print(f'admin_handlers Строка №108 - {e}')
+
+
+# ?? Пока что не используем этот кусок
+# # Команда для записи дней от той даты (то есть если от 1.09 нам нужно 7 дней, то будем искать с 1.09 до 8.09)
+# # * @dp.message_handler(state=FSMSessions.days)
+# async def select_quantity_days(message: types.Message, state: FSMContext):
+#     try:
+#         async with state.proxy() as data:
+#             data['days'] = message.text
+#         await FSMSessions.next()
+#         await message.answer(f'Ожидайте...', reply_markup=kb_admin_workers_menu)
+#         check_worker_session(data['name'], data['date'], data['days'])
+#         await state.finish()
+#     except Exception as e:
+#         await message.answer(f'Что-то пошло не так!\nПроверте консоль сервера на ошибки!\nНапишите команду ОТМЕНА!', reply_markup=kb_admin_cancel)
+#         print(f'admin_handlers Строка №108 - {e}')
 
 
 #! =============================================================================================== !#
@@ -254,7 +254,7 @@ async def select_cash_option(message: types.Message, state: FSMContext):
                 await state.finish()
             elif data['option'].lower() == 'увеличить' or data['option'].lower() == 'уменьшить':
                 await message.answer(f'Запишите количество денег', reply_markup=kb_admin_cancel)
-            if data['option'].lower() == 'форматировать':
+            elif data['option'].lower() == 'форматировать':
                 await message.answer(f'ВЫ УВЕРЕНЫ, ЧТО ХОТИТЕ ПРОВЕСТЬ ФОРМАТИРОВАНИЕ КАССЫ??\nВВЕДИТЕ ПИН-КОД, ЕСЛИ ВЫ УВЕРЕНЫ!', reply_markup=kb_admin_cancel)
             else:
                 await message.answer(f'Такой команды нет!', reply_markup=kb_admin_main_menu)
@@ -329,8 +329,8 @@ def register_admin_handlers(dp: Dispatcher):
             worker_sessions, commands=['Смены_сотрудников'])
         dp.register_message_handler(select_worker, state=FSMSessions.name)
         dp.register_message_handler(select_date, state=FSMSessions.date)
-        dp.register_message_handler(
-            select_quantity_days, state=FSMSessions.days)
+        # dp.register_message_handler(
+        #     select_quantity_days, state=FSMSessions.days)
         dp.register_message_handler(
             active_sessions, commands=['Активные_смены'])
         dp.register_message_handler(change_workers, commands=[
