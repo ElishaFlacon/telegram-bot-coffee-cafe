@@ -2,7 +2,7 @@ from aiogram import executor
 from create import dp
 from handlers import *
 
-# ТЕСТ
+
 #! Инициализируем хендлеры
 try:
     register_admin_handlers(dp)
