@@ -3,6 +3,7 @@ from create import dp
 from handlers import *
 
 
+# тест
 #! Инициализируем хендлеры
 try:
     register_admin_handlers(dp)
