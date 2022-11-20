@@ -10,6 +10,9 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.filters.state import State, StatesGroup
 
 
+#! =============================================================================================== !#
+
+
 # Машина состояний для добовления продукта в заказ
 class FSMProducts(StatesGroup):
     product = State()
@@ -21,6 +24,9 @@ class FSMProducts(StatesGroup):
 # Машина состояний для выбора способа оплаты
 class FSMPaymentMethod(StatesGroup):
     method = State()
+
+
+#! =============================================================================================== !#
 
 
 # Команда начала смены
@@ -37,7 +43,10 @@ async def start_session(message: types.Message):
             await message.answer(f'{get_worker_name(message.from_user.id)}, Завершите прошлую смену, чтобы начать новую смену!', reply_markup=kb_worker_end_session)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №34 - {e}')
+        print(f'worker_handlers Строка №46 - {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда создания заказа
@@ -48,7 +57,7 @@ async def create_order(message: types.Message):
             await message.answer(f'Вы начали собирать заказ {create_new_order(message.from_user.id)}', reply_markup=kb_worker_create_order)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №45 - {e}')
+        print(f'worker_handlers Строка №60 - {e}')
 
 
 # Команда добавления продукта
@@ -60,7 +69,10 @@ async def add_product_to_order(message: types.Message):
             await message.answer('Выберите продукт', reply_markup=kb_worker_append_product)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №58 - {e}')
+        print(f'worker_handlers Строка №72 - {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда выхода из машины состояния (выше всех команд добавления продуктов)
@@ -72,8 +84,10 @@ async def fsm_products_exit(message: types.Message, state: FSMContext):
             await message.answer('Команда ОТМЕНА!\nВы вернулись в основное меню', reply_markup=kb_worker_main_menu)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №34 - {e}')
+        print(f'worker_handlers Строка №87 - {e}')
 
+
+#! =============================================================================================== !#
 
 # Выбор продукта
 # * @dp.message_handler(state=FSMProducts.product)
@@ -102,7 +116,7 @@ async def select_product(message: types.Message, state: FSMContext):
             await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №101 - {e}')
+        print(f'worker_handlers Строка №119 - {e}')
 
 
 # Выбор вкуса продукта
@@ -128,7 +142,7 @@ async def select_taste(message: types.Message, state: FSMContext):
             await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №127 - {e}')
+        print(f'worker_handlers Строка №145 - {e}')
 
 
 # Выбор посыпки для мороженного
@@ -154,7 +168,7 @@ async def select_additions(message: types.Message, state: FSMContext):
             await message.answer(f'Добавлена посыпка: {message.text}')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №148 - {e}')
+        print(f'worker_handlers Строка №171 - {e}')
 
 
 # Выбор топинга для мороженного
@@ -170,7 +184,7 @@ async def select_toping(message: types.Message, state: FSMContext):
         await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №164 - {e}')
+        print(f'worker_handlers Строка №187 - {e}')
 
 
 # Команда отмены заказа
@@ -182,7 +196,7 @@ async def cancel_creating_order(message: types.Message):
             remove_order(get_number_being_created_order(message.from_user.id))
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №176 - {e}')
+        print(f'worker_handlers Строка №199 - {e}')
 
 
 # Команда завершения создания заказа
@@ -194,7 +208,7 @@ async def complete_creating_order(message: types.Message):
             await message.answer('Выберите способ оплаты', reply_markup=kb_worker_payment_method)
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №191 - {e}')
+        print(f'worker_handlers Строка №211 - {e}')
 
 
 # Команда выбора способа оплаты
@@ -222,7 +236,10 @@ async def select_payment_method(message: types.Message, state: FSMContext):
         await state.finish()
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №222 - {e}')
+        print(f'worker_handlers Строка №239- {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда просмотра текущих заказов
@@ -236,7 +253,7 @@ async def check_actuals_orders(message: types.Message):
                     await message.answer(f'Текущий Заказ №{i+1}: <strong>{get_all_products(i+1)}\n{get_payment_method_with_text(i+1)}\n Цена: {get_order_price(i+1)} Р.</strong>', parse_mode='html', reply_markup=create_inline_keyboard(i+1))
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №205 - {e}')
+        print(f'worker_handlers Строка №256 - {e}')
 
 
 # Команда просмотра завершенных заказов
@@ -250,7 +267,7 @@ async def check_complete_orders(message: types.Message):
                     await message.answer(f'Завершенный Заказ №{i+1}: <strong>{get_all_products(i+1)}\n{get_payment_method_with_text(i+1)}\nЦена: {get_order_price(i+1)} Р.</strong>', parse_mode='html')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №219 - {e}')
+        print(f'worker_handlers Строка №270 - {e}')
 
 
 # Тут будут все команды от инлайн кнопок
@@ -272,7 +289,10 @@ async def inline_keyboards_commands(callback: types.CallbackQuery):
             remove_order(callback.data.split()[1])
     except Exception as e:
         await callback.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №239 - {e}')
+        print(f'worker_handlers Строка №292 - {e}')
+
+
+#! =============================================================================================== !#
 
 
 # Команда закрытия смены
@@ -289,10 +309,13 @@ async def end_session(message: types.Message):
             await message.answer(f'<strong>Вы уже закрыли смену!</strong>\nЕсли вы не закрывали смену, обратитесь к Администратору!', reply_markup=ReplyKeyboardRemove(), parse_mode='html')
     except Exception as e:
         await message.answer(f'Что-то пошло не так!\nОбратитесь к администатору!')
-        print(f'worker_handlers Строка №255 - {e}')
+        print(f'worker_handlers Строка №312 - {e}')
 
 
-#! Регистрация всех хендлеров
+#! =============================================================================================== !#
+
+
+# Регистрация всех хендлеров
 def register_worker_handlers(dp: Dispatcher):
     try:
         dp.register_message_handler(start_session, commands=['Начать_смену'])

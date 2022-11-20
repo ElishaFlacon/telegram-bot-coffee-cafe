@@ -3,6 +3,9 @@ from keyboards import *
 from verification import *
 
 
+#! =============================================================================================== !#
+
+
 # Команда старта
 # * @dp.message_handler(commands=['start', 'старт'])
 async def start_working(message: types.Message):
@@ -14,10 +17,13 @@ async def start_working(message: types.Message):
         else:
             await message.answer(f'Здравствуйте, вы не зарегистрированный пользователь, обратитесь к Администратору и предоставте ваш ID: <strong>{message.from_user.id}</strong>', parse_mode='html')
     except Exception as e:
-        print(f'other_handlers Строка №18 - {e}')
+        print(f'other_handlers Строка №20 - {e}')
 
 
-#! Регистрация всех хендлеров
+#! =============================================================================================== !#
+
+
+# Регистрация всех хендлеров
 def register_other_handlers(dp: Dispatcher):
     try:
         dp.register_message_handler(start_working, commands=['start', 'старт'])

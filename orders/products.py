@@ -86,7 +86,7 @@ def increasing_products_count(num_order, count):
             if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order):
                 # Пробел в сплите, после ; нужен, просто необходим, наверно))
                 # [:-1] нужен, зачем? а потому что в конце массива появлялась пустая строка
-                # через иф не убиралась, так что вырежем так))
+                # через иф не убиралась, так что вырежем так :))
                 for j in ORDERS_SHEET[f'G{i+1}'].value.split('; ')[:-1]:
                     for l in range(max_rw_products):
                         # Тут проверка на продукт и вкус

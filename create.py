@@ -12,3 +12,4 @@ try:
     dp = Dispatcher(bot, storage=storage)
 except Exception as e:
     print(f'create ОШИБКА СОЗДАНИЯ БОТА - {e}')
+

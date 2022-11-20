@@ -1,4 +1,4 @@
-from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
+from aiogram.types import ReplyKeyboardMarkup, KeyboardButton
 
 
 # Кнопки основного меню
@@ -43,6 +43,7 @@ k_admin_clear_cash = KeyboardButton('Форматировать')
 k_payment_method_card = KeyboardButton('Карта')
 k_payment_method_paper = KeyboardButton('Наличные')
 
+
 # Инициализация клавиатуры основного меню
 kb_admin_main_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 # Инициализация клавиатуры меню сотрудников
@@ -59,6 +60,7 @@ kb_admin_cash_menu = ReplyKeyboardMarkup(resize_keyboard=True)
 kb_admin_cancel = ReplyKeyboardMarkup(resize_keyboard=True)
 # Инициализация клавиатуры способа оплаты
 kb_admin_pay_method = ReplyKeyboardMarkup(resize_keyboard=True)
+
 
 # Отображение клавиатуры основного меню
 kb_admin_main_menu.row(k_admin_workers).row(k_admin_products).row(k_admin_cash)

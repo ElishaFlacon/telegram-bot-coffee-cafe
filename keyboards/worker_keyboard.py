@@ -109,7 +109,7 @@ def create_inline_keyboard(num_order):
         return kb_worker_comoleted_and_remove_order.add(
             k_complete_order).add(k_remove_order)
     except Exception as e:
-        print(f'worker_keyboard Строка №106 - {e}')
+        print(f'worker_keyboard Строка №112 - {e}')
 
 
 #! Инициализируем клавиатуры

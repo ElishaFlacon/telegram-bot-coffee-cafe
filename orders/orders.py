@@ -21,11 +21,10 @@ def create_new_order(worker_id):
                         save_data()
                         return str(int(ORDERS_SHEET[f'A{i+1}'].row - 1))
     except Exception as e:
-        print(f'orders Строка №23 - {e}')
+        print(f'orders Строка №24 - {e}')
+
 
 # Завершаем создание заказа
-
-
 def complete_create_order(num_order):
     try:
         max_rw_orders = ORDERS_SHEET.max_row
@@ -35,7 +34,7 @@ def complete_create_order(num_order):
                 ORDERS_SHEET[f'F{i+1}'] = str(datetime.datetime.now())[:-7]
         save_data()
     except Exception as e:
-        print(f'orders Строка №35 - {e}')
+        print(f'orders Строка №37 - {e}')
 
 
 # Получаем количество всех заказов
@@ -45,7 +44,7 @@ def get_count_all_orders():
         # Иначе будет на выходе None в функции check_actua_orders
         return int(ORDERS_SHEET.max_row) - 1
     except Exception as e:
-        print(f'orders Строка №48 - {e}')
+        print(f'orders Строка №47 - {e}')
 
 
 # Получаем номер заказа (последний создающийся заказ)
@@ -58,7 +57,7 @@ def get_number_being_created_order(worker_id):
                 num_order.append(str(int(ORDERS_SHEET[f'B{i+1}'].value)))
         return str(max(num_order))
     except Exception as e:
-        print(f'orders Строка №61 - {e}')
+        print(f'orders Строка №60 - {e}')
 
 
 # Получаем номер заказа (последний выполняющийся заказ)
@@ -71,7 +70,7 @@ def get_number_process_order(worker_id):
                 num_order.append(str(int(ORDERS_SHEET[f'B{i+1}'].value)))
         return str(max(num_order))
     except Exception as e:
-        print(f'orders Строка №74 - {e}')
+        print(f'orders Строка №73 - {e}')
 
 
 # Выполняем заказ
@@ -83,7 +82,7 @@ def complete_order(num_order):
                 ORDERS_SHEET[f'C{i+1}'] = 'Завершен'
         save_data()
     except Exception as e:
-        print(f'orders Строка №86 - {e}')
+        print(f'orders Строка №85 - {e}')
 
 
 # Отменяем заказ
@@ -101,7 +100,7 @@ def remove_order(num_order):
                 ORDERS_SHEET[f'C{i+1}'] = 'Удален'
         save_data()
     except Exception as e:
-        print(f'orders Строка №104 - {e}')
+        print(f'orders Строка №103 - {e}')
 
 
 # Смотрим выполняющиеся заказы
@@ -112,7 +111,7 @@ def check_running_orders(num_order):
             if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == 'Выполняется':
                 return True
     except Exception as e:
-        print(f'orders Строка №115 - {e}')
+        print(f'orders Строка №114 - {e}')
 
 
 # Смотрим выполненные заказы
@@ -123,4 +122,4 @@ def check_completed_orders(num_order):
             if str(ORDERS_SHEET[f'B{i+1}'].value) == str(num_order) and str(ORDERS_SHEET[f'C{i+1}'].value) == 'Завершен':
                 return True
     except Exception as e:
-        print(f'orders Строка №126 - {e}')
+        print(f'orders Строка №125 - {e}')

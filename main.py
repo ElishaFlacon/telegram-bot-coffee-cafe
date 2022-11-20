@@ -3,8 +3,7 @@ from create import dp
 from handlers import *
 
 
-# тест
-#! Инициализируем хендлеры
+# Инициализируем хендлеры
 try:
     register_admin_handlers(dp)
     register_worker_handlers(dp)
@@ -13,7 +12,7 @@ except Exception as e:
     print(f'main ОШИБКА ИНИЦИАЛИЗАЦИИ ХЕНДЛЕРОВ - {e}')
 
 
-#! Запуск
+# Запуск
 try:
     if __name__ == '__main__':
         executor.start_polling(dp, skip_updates=True,

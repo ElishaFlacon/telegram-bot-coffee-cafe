@@ -2,6 +2,7 @@ from data import *
 
 
 # Получаем цену заказа, который Создается
+# ТУТ ТАКОЕ ГОВНИЩЕ, ФУ СМЕРДИТ, зато работает XD
 def get_order_price(num_order):
     try:
         max_rw_products = PRODUCTS_SHEET.max_row
@@ -43,7 +44,7 @@ def get_order_price(num_order):
                                     order_price += float(b)
         return float(order_price)
     except Exception as e:
-        print(f'price Строка №46 - {e}')
+        print(f'price Строка №47 - {e}')
 
 
 # Загружаем цену в БД
@@ -55,7 +56,7 @@ def load_order_price(price, num_order):
                 ORDERS_SHEET[f'D{i+1}'] = float(price)
         save_data()
     except Exception as e:
-        print(f'price Строка №58 - {e}')
+        print(f'price Строка №59 - {e}')
 
 
 # Получаем способ оплаты
@@ -69,7 +70,7 @@ def get_payment_method(num_order):
                 elif str(ORDERS_SHEET[f'E{i+1}'].value) == 'НАЛИЧНЫЕ':
                     return False
     except Exception as e:
-        print(f'price Строка №72 - {e}')
+        print(f'price Строка №73 - {e}')
 
 
 # Получаем способ оплаты в виде текста
@@ -83,7 +84,7 @@ def get_payment_method_with_text(num_order):
                 elif str(ORDERS_SHEET[f'E{i+1}'].value) == 'НАЛИЧНЫЕ':
                     return 'Наличные'
     except Exception as e:
-        print(f'price Строка №72 - {e}')
+        print(f'price Строка №87 - {e}')
 
 
 # Загружаем способ оплаты в БД
@@ -98,7 +99,7 @@ def load_payment_method(card, num_order):
                     ORDERS_SHEET[f'E{i+1}'] = "НАЛИЧНЫЕ"
         save_data()
     except Exception as e:
-        print(f'price Строка №87 - {e}')
+        print(f'price Строка №102 - {e}')
 
 
 # Тут лучше бы сделать еще одну функцию и получать цену из БД, а не расчитывать ее заново, через первую функцию

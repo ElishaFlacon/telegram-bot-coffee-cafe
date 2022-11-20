@@ -13,6 +13,7 @@ except Exception as e:
     print(f'data ОШИБКА ИНИЦИАЛИЗАЦИИ ДАННЫХ - {e}')
 
 
+# Функция сохранения данных
 def save_data():
     try:
         DATA.save('data/data.xlsx')

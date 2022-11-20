@@ -24,7 +24,7 @@ def change_cash_balance(money, card, option):
         CASH_SHEET[f'D{2}'] = str(datetime.now())[:-7]
         save_data()
     except Exception as e:
-        print(f'cash Строка №29 - {e}')
+        print(f'cash Строка №27 - {e}')
 
 
 # Функция очистки кассы полностью
@@ -36,7 +36,7 @@ def delete_money_to_cash():
         CASH_SHEET[f'D{2}'] = str(datetime.now())[:-7]
         save_data()
     except Exception as e:
-        print(f'cash Строка №48 - {e}')
+        print(f'cash Строка №39 - {e}')
 
 
 # Функция выводит количество денег в кассе
