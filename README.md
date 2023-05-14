@@ -13,11 +13,12 @@
 
 
 <h2>
-  🛠️ Библиотеки для работы бота:
+  🛠️ Инструменты, которые использовались при разработке бота:
 </h2>
 
-- aiogram==2.22.1
-- openpyxl==3.0.10
+- Python
+- Aiogram
+- Openpyxl
 
 
 </br>
@@ -28,14 +29,14 @@
   🚀 Зпуск приложения:
 </h2>
 
-- git clone https://github.com/ElishaFlacon/vk-bot-creating-group-post.git
-- cd vk-bot-creating-group-post
-- python -m venv <venv_name>
-- source <venv_name>/Scripts/activate (linux) or <venv_name>/Scripts/activate (windows)
-- pip install -r ./requirements.txt
+- `git clone https://github.com/ElishaFlacon/telegram-bot-coffee-cafe.git`
+- `cd telegram-bot-coffee-cafe`
+- `python -m venv <venv_name>`
+- `<venv_name>/Scripts/activate` (windows) или `source <venv_name>/Scripts/activate` (linux)
+- `pip install -r ./requirements.txt`
 - создаем бота в Bot Father, получите ключ и добавте его в keys/config.py
 - изменяем остальной код под свои нужды
-- python main.py
+- `python main.py`
 <h3>
     Запускаем, не работет, ура! 🗿🚬
 </h3>
